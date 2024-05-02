@@ -40,7 +40,7 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
       body: Center(
-        child: loadingWidget(AppColors.kWhiteColor),
+        child: loadingWidget(AppColors.kSecondaryColor),
       ),
     );
   }

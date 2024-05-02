@@ -28,7 +28,7 @@ class _LoginViewState extends State<LoginView> {
       child: Consumer<LoginViewModel>(
         builder: (BuildContext context, LoginViewModel model, Widget? child) =>
             Scaffold(
-          backgroundColor: AppColors.kWhiteColor,
+          backgroundColor: AppColors.kPrimaryColor,
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -163,7 +163,7 @@ class _LoginViewState extends State<LoginView> {
                         Navigator.pushNamed(context, RouteNames.signUpScreen);
                       },
                       textThemeStyle: textTheme.titleSmall!
-                          .copyWith(color: AppColors.kPrimaryColor),
+                          .copyWith(color: AppColors.kSecondaryColor),
                       onPressTitle: 'Signup',
                     ),
                   ],

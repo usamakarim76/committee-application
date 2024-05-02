@@ -25,7 +25,7 @@ class SocialButtonWidget extends StatelessWidget {
         height: 60.h,
         padding: EdgeInsets.symmetric(horizontal: 25.w),
         decoration: BoxDecoration(
-            color: AppColors.kGrayColor,
+            color: AppColors.kWhiteColor,
             borderRadius: BorderRadius.circular(30.r)),
         child: loading
             ? Center(

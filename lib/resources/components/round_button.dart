@@ -22,8 +22,8 @@ class LoginSignUpButton extends StatelessWidget {
       child: Container(
         height: 60.h,
         decoration: BoxDecoration(
-            color: AppColors.kPrimaryColor,
-            borderRadius: BorderRadius.circular(30.r)),
+            color: AppColors.kSecondaryColor,
+            borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: loading ? loadingWidget(AppColors.kWhiteColor) : Text(
             title,

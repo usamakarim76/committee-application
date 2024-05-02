@@ -46,7 +46,7 @@ class _MainViewState extends State<MainView> {
           style: textTheme.titleMedium,
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kWhiteColor,
+        backgroundColor: AppColors.kPrimaryColor,
         actions: [
           IconButton(
               onPressed: () {
@@ -55,7 +55,7 @@ class _MainViewState extends State<MainView> {
               icon: const Icon(Icons.logout))
         ],
       ),
-      backgroundColor: AppColors.kWhiteColor,
+      backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(
           stream: firestore
               .collection(AppConstants.collectionName)
@@ -71,7 +71,7 @@ class _MainViewState extends State<MainView> {
               );
             } else if (!snapshot.hasData || !snapshot.data!.exists) {
               return Center(
-                child: loadingWidget(AppColors.kPrimaryColor),
+                child: loadingWidget(AppColors.kSecondaryColor),
               );
             } else {
               return Center(

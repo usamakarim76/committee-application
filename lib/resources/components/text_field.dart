@@ -32,7 +32,7 @@ class TextFieldWidget extends StatelessWidget {
       height: 60.h,
       width: width,
       decoration: BoxDecoration(
-          color: AppColors.kGrayColor,
+          color: AppColors.kWhiteColor,
           borderRadius: BorderRadius.circular(10.r)),
       child: TextFormField(
         controller: controller,
