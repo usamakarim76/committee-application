@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "873990111154",
+    "project_id": "committee-f7dae",
+    "storage_bucket": "committee-f7dae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873990111154:android:00b1008c55b6bdc4a6aeab",
+        "android_client_info": {
+          "package_name": "app.committee.committee_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAECLhK3ULZXj8z43aNmZg2MV_MVKsR8SQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
