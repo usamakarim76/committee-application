@@ -7,6 +7,7 @@ import 'package:committee_app/utils/utils.dart';
 import 'package:committee_app/view_model/signup_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../resources/components/social_button.dart';
 import '../resources/components/text_button.dart';
@@ -28,11 +29,11 @@ class _UserSignUpViewState extends State<UserSignUpView> {
         builder: (BuildContext context, SignUpViewModel model, Widget? child) =>
             Scaffold(
           backgroundColor: AppColors.kPrimaryColor,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Form(
-                key: model.formKey,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Form(
+              key: model.formKey,
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -40,7 +41,7 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                       height: 50.h,
                     ),
                     Text(
-                      "SIGN IN",
+                      "SIGN UP",
                       style: textTheme.titleMedium!.copyWith(
                         fontSize: 20.sp,
                       ),
@@ -52,7 +53,39 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                         "Looks like you don't have an account. Let's create a new account for you",
                         style: textTheme.titleSmall),
                     SizedBox(
-                      height: 40.h,
+                      height: 20.h,
+                    ),
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          model.settingModalBottomSheet(context, () {
+                            model
+                                .pickImage(ImageSource.camera)
+                                .then((value) => Navigator.pop(context));
+                          }, () {
+                            model
+                                .pickImage(ImageSource.gallery)
+                                .then((value) => Navigator.pop(context));
+                          });
+                        },
+                        overlayColor:
+                            const MaterialStatePropertyAll(Colors.transparent),
+                        child: Container(
+                          height: 130.h,
+                          width: 130.w,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.kBlackColor),
+                              shape: BoxShape.circle),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/user.png"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     TextFieldWidget(
                       width: width,

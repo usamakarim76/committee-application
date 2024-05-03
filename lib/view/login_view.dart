@@ -102,13 +102,10 @@ class _LoginViewState extends State<LoginView> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButtonWidget(
-                        onPress: () {},
-                        textThemeStyle: textTheme.bodyMedium!,
-                        onPressTitle: 'Forgot Password?',
-                      ),
+                    TextButtonWidget(
+                      onPress: () {},
+                      textThemeStyle: textTheme.bodyMedium!,
+                      onPressTitle: 'Forgot Password?',
                     ),
                     SizedBox(
                       height: 10.h,
@@ -133,7 +130,10 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Row(
                       children: [
-                        const Expanded(child: Divider()),
+                        Expanded(
+                            child: Divider(
+                          color: AppColors.kBlackColor.withOpacity(0.2),
+                        )),
                         SizedBox(
                           width: 10.w,
                         ),
@@ -141,7 +141,10 @@ class _LoginViewState extends State<LoginView> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        const Expanded(child: Divider())
+                        Expanded(
+                            child: Divider(
+                          color: AppColors.kBlackColor.withOpacity(0.2),
+                        ))
                       ],
                     ),
                     SizedBox(

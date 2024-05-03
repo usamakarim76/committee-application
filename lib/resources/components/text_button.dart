@@ -27,7 +27,7 @@ class TextButtonWidget extends StatelessWidget {
         TextButton(
             onPressed: onPress,
             style: const ButtonStyle(
-                overlayColor: MaterialStatePropertyAll(AppColors.kWhiteColor)),
+                overlayColor: MaterialStatePropertyAll(Colors.transparent)),
             child: Text(
               onPressTitle,
               style: textThemeStyle,

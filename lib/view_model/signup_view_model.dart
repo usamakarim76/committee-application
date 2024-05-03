@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:committee_app/resources/components/pop_over_widget.dart';
 import 'package:committee_app/resources/constants.dart';
+import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   BuildContext context;
@@ -24,7 +29,9 @@ class SignUpViewModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  ImagePicker imagePicker = ImagePicker();
   String error = '';
+  String? userImage;
   bool isLoading = false, isGoogleLoading = false;
 
   Future registerUser() async {
@@ -94,4 +101,61 @@ class SignUpViewModel extends ChangeNotifier {
       Utils.errorMessage(context, e.message);
     }
   }
+
+  Future pickImage(source) async {
+    try {
+      XFile? image = await imagePicker.pickImage(source: source);
+      if (image == null) {
+        Utils.errorMessage(context, "Select image");
+      } else {
+        userImage = image.path;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+  }
+
+  void settingModalBottomSheet(
+      context, cameraOnPress, galleryOnPress) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return Popover(
+            child: Container(
+              height: 170.h,
+              margin: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  ListTile(
+                      leading: const Icon(
+                        Icons.camera_alt_outlined,
+                        color: Color(0xff767676),
+                      ),
+                      title: Text('Camera',
+                          style: textTheme.titleSmall!
+                              .copyWith(fontWeight: FontWeight.w100)),
+                      onTap: cameraOnPress),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.perm_media_outlined,
+                      color: Color(0xff767676),
+                    ),
+                    title: Text('Gallery',
+                        style: textTheme.titleSmall!
+                            .copyWith(fontWeight: FontWeight.w100)),
+                    onTap: galleryOnPress,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
 }
