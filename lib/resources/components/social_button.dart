@@ -1,4 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,10 @@ class SocialButtonWidget extends StatelessWidget {
             color: AppColors.kWhiteColor,
             borderRadius: BorderRadius.circular(30.r)),
         child: loading
-            ? Center(
-                child: loadingWidget(AppColors.kPrimaryColor),
-              )
+            ? const Center(
+                child: LoadingWidget(
+                color: AppColors.kPrimaryColor,
+              ))
             : Row(
                 children: [
                   Image.asset(

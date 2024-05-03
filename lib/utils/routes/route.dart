@@ -1,7 +1,7 @@
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/view/login_view.dart';
 import 'package:committee_app/view/main_view.dart';
-import 'package:committee_app/view/signup_view.dart';
+import 'package:committee_app/view/user_signup_view.dart';
 import 'package:committee_app/view/splash_view.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class Routes {
             builder: (BuildContext context) => const LoginView());
       case RouteNames.signUpScreen:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const SignUpView());
+            builder: (BuildContext context) => const UserSignUpView());
       case RouteNames.mainScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => const MainView());

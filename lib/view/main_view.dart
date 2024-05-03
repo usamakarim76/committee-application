@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
-import 'package:committee_app/resources/components/round_button.dart';
+import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
@@ -58,7 +58,7 @@ class _MainViewState extends State<MainView> {
       backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(
           stream: firestore
-              .collection(AppConstants.collectionName)
+              .collection(AppConstants.userCollectionName)
               .doc(auth.currentUser!.uid)
               .snapshots(),
           builder: (context, snapshot) {
@@ -70,8 +70,10 @@ class _MainViewState extends State<MainView> {
                 ),
               );
             } else if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(
-                child: loadingWidget(AppColors.kSecondaryColor),
+              return const Center(
+                child: LoadingWidget(
+                  color: AppColors.kSecondaryColor,
+                )
               );
             } else {
               return Center(

@@ -1,4 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +26,17 @@ class LoginSignUpButton extends StatelessWidget {
             color: AppColors.kSecondaryColor,
             borderRadius: BorderRadius.circular(10.r)),
         child: Center(
-          child: loading ? loadingWidget(AppColors.kWhiteColor) : Text(
-            title,
-            style:
-                textTheme.titleMedium!.copyWith(color: AppColors.kWhiteColor),
-          ),
+          child: loading
+              ? const LoadingWidget(
+                  color: AppColors.kWhiteColor,
+                )
+              : Text(
+                  title,
+                  style: textTheme.titleMedium!
+                      .copyWith(color: AppColors.kWhiteColor),
+                ),
         ),
       ),
     );
   }
-}
-
-Widget loadingWidget(Color color) {
-  return CupertinoActivityIndicator(
-    color: color,
-    radius: 15,
-  );
 }

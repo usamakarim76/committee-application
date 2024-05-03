@@ -12,9 +12,13 @@ class SignUpViewModel extends ChangeNotifier {
 
   final emailController = TextEditingController();
   final userNameController = TextEditingController();
+  final userPhoneNumberController = TextEditingController();
+  final userAddressController = TextEditingController();
   final passwordController = TextEditingController();
   FocusNode emailNode = FocusNode();
   FocusNode userNameNode = FocusNode();
+  FocusNode userPhoneNode = FocusNode();
+  FocusNode userAddressNode = FocusNode();
   FocusNode passwordNode = FocusNode();
   ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -53,7 +57,7 @@ class SignUpViewModel extends ChangeNotifier {
 
   Future dataToFirestore(name, email) async {
     await firestore
-        .collection(AppConstants.collectionName)
+        .collection(AppConstants.userCollectionName)
         .doc(auth.currentUser!.uid)
         .set({
       'Name': name,

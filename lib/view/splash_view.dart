@@ -1,4 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,10 +38,12 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
       body: Center(
-        child: loadingWidget(AppColors.kSecondaryColor),
+        child: LoadingWidget(
+          color: AppColors.kSecondaryColor,
+        ),
       ),
     );
   }

@@ -11,14 +11,14 @@ import 'package:provider/provider.dart';
 import '../resources/components/social_button.dart';
 import '../resources/components/text_button.dart';
 
-class SignUpView extends StatefulWidget {
-  const SignUpView({super.key});
+class UserSignUpView extends StatefulWidget {
+  const UserSignUpView({super.key});
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  State<UserSignUpView> createState() => _UserSignUpViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _UserSignUpViewState extends State<UserSignUpView> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -38,15 +38,6 @@ class _SignUpViewState extends State<SignUpView> {
                   children: [
                     SizedBox(
                       height: 50.h,
-                    ),
-                    Text(
-                      "REUNION",
-                      style: textTheme.titleMedium!.copyWith(
-                        fontSize: 25.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
                     ),
                     Text(
                       "SIGN IN",
@@ -95,6 +86,38 @@ class _SignUpViewState extends State<SignUpView> {
                     SizedBox(
                       height: 20.h,
                     ),
+                    TextFieldWidget(
+                      width: width,
+                      node: model.userPhoneNode,
+                      title: "Phone Number",
+                      controller: model.userPhoneNumberController,
+                      textInputType: TextInputType.phone,
+                      function: () {
+                        Utils.focusNodeChange(
+                            context, model.userPhoneNode, model.passwordNode);
+                      },
+                      onTapFunction: () {},
+                      icon: Icons.phone,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    TextFieldWidget(
+                      width: width,
+                      node: model.userAddressNode,
+                      title: "Address",
+                      controller: model.userAddressController,
+                      textInputType: TextInputType.text,
+                      function: () {
+                        Utils.focusNodeChange(
+                            context, model.userAddressNode, model.passwordNode);
+                      },
+                      onTapFunction: () {},
+                      icon: Icons.home,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     ValueListenableBuilder(
                       valueListenable: model.obscureText,
                       builder: (context, value, child) {
@@ -119,20 +142,21 @@ class _SignUpViewState extends State<SignUpView> {
                       height: 50.h,
                     ),
                     LoginSignUpButton(
-                        title: "CREATE ACCOUNT",
-                        onPress: () {
-                          if (model.userNameController.text.isEmpty ||
-                              model.emailController.text.isEmpty ||
-                              model.passwordController.text.isEmpty) {
-                            Utils.errorMessage(
-                                context, "All fields are required");
-                          } else {
-                            if (model.formKey.currentState!.validate()) {
-                              model.registerUser();
-                            }
+                      title: "CREATE ACCOUNT",
+                      onPress: () {
+                        if (model.userNameController.text.isEmpty ||
+                            model.emailController.text.isEmpty ||
+                            model.passwordController.text.isEmpty) {
+                          Utils.errorMessage(
+                              context, "All fields are required");
+                        } else {
+                          if (model.formKey.currentState!.validate()) {
+                            model.registerUser();
                           }
-                        },
-                    loading: model.isLoading,),
+                        }
+                      },
+                      loading: model.isLoading,
+                    ),
                     SizedBox(
                       height: 30.h,
                     ),

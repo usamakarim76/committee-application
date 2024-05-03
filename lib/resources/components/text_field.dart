@@ -55,7 +55,7 @@ class TextFieldWidget extends StatelessWidget {
               onTap: onTapFunction,
               child: Icon(
                 icon,
-                color: AppColors.kPrimaryColor,
+                color: AppColors.kSecondaryColor,
                 size: 25,
               ),
             ),
@@ -67,7 +67,9 @@ class TextFieldWidget extends StatelessWidget {
         onFieldSubmitted: (value) {
           function!();
         },
-        textCapitalization: title == "Name" ? TextCapitalization.words : TextCapitalization.none,
+        textCapitalization: title == "Name"
+            ? TextCapitalization.words
+            : TextCapitalization.none,
       ),
     );
   }

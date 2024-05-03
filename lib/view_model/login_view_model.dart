@@ -79,7 +79,7 @@ class LoginViewModel extends ChangeNotifier {
 
   Future dataToFirestore(name, email) async {
     await firestore
-        .collection(AppConstants.collectionName)
+        .collection(AppConstants.userCollectionName)
         .doc(auth.currentUser!.uid)
         .set({
       'Name': name,
