@@ -29,10 +29,10 @@ class _SplashViewState extends State<SplashView> {
   void checkLogin() {
     if (auth.currentUser == null) {
       Navigator.pushNamedAndRemoveUntil(
-          context, RouteNames.loginScreen, (route) => false);
+          context, RouteNames.forgotPasswordScreen, (route) => false);
     } else {
       Navigator.pushNamedAndRemoveUntil(
-          context, RouteNames.mainScreen, (route) => false);
+          context, RouteNames.adminDashBoardScreen, (route) => false);
     }
   }
 

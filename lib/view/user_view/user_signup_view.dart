@@ -1,16 +1,19 @@
+import 'dart:io';
+
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/components/text_field.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
-import 'package:committee_app/view_model/signup_view_model.dart';
+import 'package:committee_app/view_model/user_view_model/signup_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import '../resources/components/social_button.dart';
-import '../resources/components/text_button.dart';
+import '../../resources/components/social_button.dart';
+import '../../resources/components/text_button.dart';
 
 class UserSignUpView extends StatefulWidget {
   const UserSignUpView({super.key});
@@ -41,7 +44,7 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                       height: 50.h,
                     ),
                     Text(
-                      "SIGN UP",
+                      "USER SIGN UP",
                       style: textTheme.titleMedium!.copyWith(
                         fontSize: 20.sp,
                       ),
@@ -77,9 +80,16 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                               border: Border.all(color: AppColors.kBlackColor),
                               shape: BoxShape.circle),
                           child: CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/user.png"),
+                            backgroundImage: model.userImage == ''
+                                ? null
+                                : FileImage(
+                                    File(model.userImage),
+                                  ),
                             backgroundColor: Colors.transparent,
+                            child: model.userImage == ''
+                                ? Lottie.asset(
+                                    "assets/lottie/user_profile_image.json")
+                                : null,
                           ),
                         ),
                       ),
@@ -111,7 +121,7 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                       textInputType: TextInputType.emailAddress,
                       function: () {
                         Utils.focusNodeChange(
-                            context, model.emailNode, model.passwordNode);
+                            context, model.emailNode, model.userPhoneNode);
                       },
                       onTapFunction: () {},
                       icon: Icons.email_outlined,
@@ -126,8 +136,8 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                       controller: model.userPhoneNumberController,
                       textInputType: TextInputType.phone,
                       function: () {
-                        Utils.focusNodeChange(
-                            context, model.userPhoneNode, model.passwordNode);
+                        Utils.focusNodeChange(context, model.userPhoneNode,
+                            model.userAddressNode);
                       },
                       onTapFunction: () {},
                       icon: Icons.phone,
@@ -209,24 +219,32 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    SocialButtonWidget(
-                        title: "Continue with Google",
-                        loading: model.isGoogleLoading,
+                    LoginSignUpButton(
+                        title: "CREATE ADMIN ACCOUNT",
                         onPress: () {
-                          model.googleSignIn();
-                        },
-                        image: "assets/images/google2.png"),
+                          print("Asdsada");
+                          Navigator.pushReplacementNamed(
+                              context, RouteNames.adminSignUpScreen);
+                        }),
+                    // SocialButtonWidget(
+                    //     title: "Continue with Google",
+                    //     loading: model.isGoogleLoading,
+                    //     onPress: () {
+                    //       model.googleSignIn();
+                    //     },
+                    //     image: "assets/images/google2.png"),
                     SizedBox(
                       height: 40.h,
                     ),
                     TextButtonWidget(
-                      title: "Don’t have an account?",
+                      title: "Already have an account?",
                       onPress: () {
-                        Navigator.pushNamed(context, RouteNames.loginScreen);
+                        // Navigator.pushNamed(context, RouteNames.loginScreen);
+                        Navigator.pop(context);
                       },
                       textThemeStyle: textTheme.titleSmall!
                           .copyWith(color: AppColors.kSecondaryColor),
-                      onPressTitle: 'Signup',
+                      onPressTitle: 'Sign In',
                     ),
                   ],
                 ),

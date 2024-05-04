@@ -1,7 +1,10 @@
 import 'package:committee_app/utils/routes/route_name.dart';
+import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
+import 'package:committee_app/view/admin_view/admin_signup_view.dart';
+import 'package:committee_app/view/forgot_password_view.dart';
 import 'package:committee_app/view/login_view.dart';
-import 'package:committee_app/view/main_view.dart';
-import 'package:committee_app/view/user_signup_view.dart';
+import 'package:committee_app/view/user_view/user_dashboard_view.dart';
+import 'package:committee_app/view/user_view/user_signup_view.dart';
 import 'package:committee_app/view/splash_view.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +18,21 @@ class Routes {
       case RouteNames.loginScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => const LoginView());
-      case RouteNames.signUpScreen:
+      case RouteNames.userSignUpScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => const UserSignUpView());
-      case RouteNames.mainScreen:
+      case RouteNames.adminSignUpScreen:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const MainView());
+            builder: (BuildContext context) => const AdminSignUpView());
+      case RouteNames.forgotPasswordScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ForgotPasswordView());
+      case RouteNames.adminDashBoardScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const AdminDashBoardView());
+      case RouteNames.userDashBoardScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const UserDashBoardView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

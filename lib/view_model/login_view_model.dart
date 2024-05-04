@@ -25,22 +25,42 @@ class LoginViewModel extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-      await auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      await auth
+          .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          )
+          .then((value) => {
+                getCurrentUserRole(),
+              });
       isLoading = false;
       notifyListeners();
       Utils.successMessage(context, "Log in successfully");
-      emailController.clear();
-      passwordController.clear();
-      Navigator.pushNamedAndRemoveUntil(
-          context, RouteNames.mainScreen, (route) => false);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
       error = e.message!;
       Utils.errorMessage(context, error);
+    }
+  }
+
+  Future getCurrentUserRole() async {
+    DocumentSnapshot snapshot = await firestore
+        .collection(AppConstants.userDataCollectionName)
+        .doc(auth.currentUser!.uid)
+        .get();
+    if (snapshot.exists) {
+      print("object");
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+      if (userData['Role'] == "Admin") {
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteNames.adminDashBoardScreen, (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteNames.userDashBoardScreen, (route) => false);
+      }
+    } else {
+      Utils.errorMessage(context, "No user found");
     }
   }
 
@@ -65,7 +85,7 @@ class LoginViewModel extends ChangeNotifier {
         isGoogleLoading = false;
         notifyListeners();
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.mainScreen, (route) => false);
+            context, RouteNames.adminDashBoardScreen, (route) => false);
       } else {
         isGoogleLoading = false;
         notifyListeners();
@@ -79,7 +99,7 @@ class LoginViewModel extends ChangeNotifier {
 
   Future dataToFirestore(name, email) async {
     await firestore
-        .collection(AppConstants.userCollectionName)
+        .collection(AppConstants.userDataCollectionName)
         .doc(auth.currentUser!.uid)
         .set({
       'Name': name,

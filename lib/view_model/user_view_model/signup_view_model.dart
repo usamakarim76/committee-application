@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/components/pop_over_widget.dart';
 import 'package:committee_app/resources/constants.dart';
@@ -5,6 +7,7 @@ import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fs;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,33 +30,47 @@ class SignUpViewModel extends ChangeNotifier {
   FocusNode passwordNode = FocusNode();
   ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
   final FirebaseAuth auth = FirebaseAuth.instance;
+  fs.FirebaseStorage storage = fs.FirebaseStorage.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ImagePicker imagePicker = ImagePicker();
-  String error = '';
-  String? userImage;
+  String error = '', userImage = '';
+  String? imageURL;
   bool isLoading = false, isGoogleLoading = false;
 
   Future registerUser() async {
     try {
+      print("object");
       isLoading = true;
       notifyListeners();
+      File? imageFile = File(userImage);
+      // Upload image to Firebase Storage
+      imageURL = await uploadImageToFirebase(imageFile);
       await auth
           .createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       )
           .then((value) {
-        dataToFirestore(userNameController.text, emailController.text);
-        userNameController.clear();
-        emailController.clear();
-        passwordController.clear();
+        dataToFireStore(
+                userNameController.text,
+                emailController.text,
+                userPhoneNumberController.text,
+                userAddressController.text,
+                imageURL)
+            .then((value) => {
+                  isLoading = false,
+                  notifyListeners(),
+                  Utils.successMessage(context, "Registered Successfully"),
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteNames.forgotPasswordScreen, (route) => false),
+                })
+            .onError((error, stackTrace) => {
+                  Utils.errorMessage(context, error),
+                });
         isLoading = false;
         notifyListeners();
       });
-      Utils.successMessage(context, "Registered Successfully");
-      Navigator.pushNamedAndRemoveUntil(
-          context, RouteNames.loginScreen, (route) => false);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
@@ -62,13 +79,25 @@ class SignUpViewModel extends ChangeNotifier {
     }
   }
 
-  Future dataToFirestore(name, email) async {
+  Future dataToFireStore(
+      userName, userEmail, phoneNumber, userAddress, image) async {
+    CollectionReference user =
+        firestore.collection(AppConstants.userDataCollectionName);
+    QuerySnapshot querySnapshot = await user.get();
+    int count = querySnapshot.docs.length;
     await firestore
-        .collection(AppConstants.userCollectionName)
+        .collection(AppConstants.userDataCollectionName)
         .doc(auth.currentUser!.uid)
         .set({
-      'Name': name,
-      'Email': email,
+      'Id': count + 1,
+      'Name': userName ?? "",
+      'Email': userEmail ?? "",
+      'PhoneNumber': phoneNumber ?? "",
+      'Address': userAddress ?? "",
+      'Role': 'User',
+      'DeviceToken': "",
+      'ProfileImage': image ?? "",
+      'CreatedAT': DateTime.now().toString()
     });
   }
 
@@ -88,17 +117,46 @@ class SignUpViewModel extends ChangeNotifier {
             accessToken: googleSignInAuthentication.accessToken);
         UserCredential result = await auth.signInWithCredential(authCredential);
         User? user = result.user;
-        dataToFirestore(user!.displayName, user.email);
-        Utils.successMessage(context, "Log in successfully");
+        dataToFireStore(user!.displayName, user.email, user.phoneNumber, "",
+                user.photoURL)
+            .then((value) => {
+                  Utils.successMessage(context, "Log in successfully"),
+                  isGoogleLoading = false,
+                  notifyListeners(),
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteNames.adminDashBoardScreen, (route) => false),
+                })
+            .onError((error, stackTrace) => {
+                  Utils.errorMessage(context, error),
+                });
         isGoogleLoading = false;
         notifyListeners();
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.mainScreen, (route) => false);
       }
     } on FirebaseAuthException catch (e) {
       isGoogleLoading = false;
       notifyListeners();
       Utils.errorMessage(context, e.message);
+    }
+  }
+
+  // Method to upload image to Firebase Storage
+  Future<String?> uploadImageToFirebase(File imageFile) async {
+    try {
+      String imageName = DateTime.now().millisecondsSinceEpoch.toString();
+      fs.Reference storageReference = storage
+          .ref()
+          .child('images/${userNameController.text + imageName}');
+      fs.UploadTask uploadTask = storageReference.putFile(imageFile);
+      fs.TaskSnapshot storageSnapshot =
+          await uploadTask.whenComplete(() => null);
+      String downloadURL = await storageSnapshot.ref.getDownloadURL();
+      print("Image uploaded successfully. Download URL: $downloadURL");
+      return downloadURL;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error uploading image: $e");
+      }
+      return null;
     }
   }
 
@@ -109,6 +167,7 @@ class SignUpViewModel extends ChangeNotifier {
         Utils.errorMessage(context, "Select image");
       } else {
         userImage = image.path;
+        notifyListeners();
       }
     } catch (e) {
       if (kDebugMode) {
@@ -117,8 +176,7 @@ class SignUpViewModel extends ChangeNotifier {
     }
   }
 
-  void settingModalBottomSheet(
-      context, cameraOnPress, galleryOnPress) {
+  void settingModalBottomSheet(context, cameraOnPress, galleryOnPress) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -157,5 +215,4 @@ class SignUpViewModel extends ChangeNotifier {
           );
         });
   }
-
 }

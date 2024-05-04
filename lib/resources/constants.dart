@@ -1,4 +1,4 @@
 class AppConstants {
-  static String userCollectionName = "User Data";
-  static String adminCollectionName = "Admin Data";
+  static String userDataCollectionName = "user_data";
+  static String adminCollectionName = "AdminData";
 }

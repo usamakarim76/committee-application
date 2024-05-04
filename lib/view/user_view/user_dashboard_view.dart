@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({super.key});
+class UserDashBoardView extends StatefulWidget {
+  const UserDashBoardView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<UserDashBoardView> createState() => _UserDashBoardViewState();
 }
 
-class _MainViewState extends State<MainView> {
+class _UserDashBoardViewState extends State<UserDashBoardView> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -26,11 +26,11 @@ class _MainViewState extends State<MainView> {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.loginScreen, (route) => false);
+            context, RouteNames.forgotPasswordScreen, (route) => false);
       } else {
         await auth.signOut();
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.loginScreen, (route) => false);
+            context, RouteNames.forgotPasswordScreen, (route) => false);
       }
     } catch (e) {
       print("Error signing out: $e");
@@ -42,7 +42,7 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Main Screen",
+          "User",
           style: textTheme.titleMedium,
         ),
         centerTitle: true,
@@ -58,7 +58,7 @@ class _MainViewState extends State<MainView> {
       backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(
           stream: firestore
-              .collection(AppConstants.userCollectionName)
+              .collection(AppConstants.userDataCollectionName)
               .doc(auth.currentUser!.uid)
               .snapshots(),
           builder: (context, snapshot) {

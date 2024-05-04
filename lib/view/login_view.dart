@@ -1,6 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/round_button.dart';
-import 'package:committee_app/resources/components/social_button.dart';
 import 'package:committee_app/resources/components/text_field.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
@@ -9,7 +8,6 @@ import 'package:committee_app/view_model/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import '../resources/components/text_button.dart';
 
 class LoginView extends StatefulWidget {
@@ -39,15 +37,6 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     SizedBox(
                       height: 50.h,
-                    ),
-                    Text(
-                      "REUNION",
-                      style: textTheme.titleMedium!.copyWith(
-                        fontSize: 25.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
                     ),
                     Text(
                       "SIGN IN",
@@ -102,10 +91,20 @@ class _LoginViewState extends State<LoginView> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    TextButtonWidget(
-                      onPress: () {},
-                      textThemeStyle: textTheme.bodyMedium!,
-                      onPressTitle: 'Forgot Password?',
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, RouteNames.forgotPasswordScreen);
+                        },
+                        style: const ButtonStyle(
+                            overlayColor:
+                                MaterialStatePropertyAll(Colors.transparent)),
+                        child: Text(
+                          "Forgot Password?",
+                          style: textTheme.bodyMedium,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 10.h,
@@ -125,45 +124,46 @@ class _LoginViewState extends State<LoginView> {
                       },
                       loading: model.isLoading,
                     ),
+                    // SizedBox(
+                    //   height: 30.h,
+                    // ),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //         child: Divider(
+                    //       color: AppColors.kBlackColor.withOpacity(0.2),
+                    //     )),
+                    //     SizedBox(
+                    //       width: 10.w,
+                    //     ),
+                    //     const Text("OR"),
+                    //     SizedBox(
+                    //       width: 10.w,
+                    //     ),
+                    //     Expanded(
+                    //         child: Divider(
+                    //       color: AppColors.kBlackColor.withOpacity(0.2),
+                    //     ))
+                    //   ],
+                    // ),
+                    // SizedBox(
+                    //   height: 30.h,
+                    // ),
+                    // SocialButtonWidget(
+                    //     title: "Sign Up with Google",
+                    //     loading: model.isGoogleLoading,
+                    //     onPress: () {
+                    //       model.googleSignIn();
+                    //     },
+                    //     image: "assets/images/google2.png"),
                     SizedBox(
-                      height: 30.h,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                          color: AppColors.kBlackColor.withOpacity(0.2),
-                        )),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        const Text("OR"),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                            child: Divider(
-                          color: AppColors.kBlackColor.withOpacity(0.2),
-                        ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    SocialButtonWidget(
-                        title: "Sign Up with Google",
-                        loading: model.isGoogleLoading,
-                        onPress: () {
-                          model.googleSignIn();
-                        },
-                        image: "assets/images/google2.png"),
-                    SizedBox(
-                      height: 120.h,
+                      height: 50.h,
                     ),
                     TextButtonWidget(
                       title: "Don’t have an account?",
                       onPress: () {
-                        Navigator.pushNamed(context, RouteNames.signUpScreen);
+                        Navigator.pushNamed(
+                            context, RouteNames.userSignUpScreen);
                       },
                       textThemeStyle: textTheme.titleSmall!
                           .copyWith(color: AppColors.kSecondaryColor),
