@@ -105,11 +105,11 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
               },
               icon: pageIndex == 1
                   ? Icon(
-                      Icons.add,
+                      Icons.person,
                       color: AppColors.kBlackColor,
                     )
                   : Icon(
-                      Icons.add,
+                      Icons.person,
                       color: AppColors.kPrimaryColor,
                     )),
           IconButton(

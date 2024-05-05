@@ -105,11 +105,11 @@ class _UserBottomNavigationBarState extends State<UserBottomNavigationBar> {
               },
               icon: pageIndex == 1
                   ? const Icon(
-                      Icons.add,
+                      Icons.person,
                       color: AppColors.kBlackColor,
                     )
                   : const Icon(
-                      Icons.add,
+                      Icons.person,
                       color: AppColors.kPrimaryColor,
                     )),
           IconButton(
