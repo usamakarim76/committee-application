@@ -26,11 +26,11 @@ class _UserDashBoardViewState extends State<UserDashBoardView> {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.forgotPasswordScreen, (route) => false);
+            context, RouteNames.loginScreen, (route) => false);
       } else {
         await auth.signOut();
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.forgotPasswordScreen, (route) => false);
+            context, RouteNames.loginScreen, (route) => false);
       }
     } catch (e) {
       print("Error signing out: $e");

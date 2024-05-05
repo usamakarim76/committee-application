@@ -63,7 +63,7 @@ class SignUpViewModel extends ChangeNotifier {
                   notifyListeners(),
                   Utils.successMessage(context, "Registered Successfully"),
                   Navigator.pushNamedAndRemoveUntil(
-                      context, RouteNames.forgotPasswordScreen, (route) => false),
+                      context, RouteNames.loginScreen, (route) => false),
                 })
             .onError((error, stackTrace) => {
                   Utils.errorMessage(context, error),

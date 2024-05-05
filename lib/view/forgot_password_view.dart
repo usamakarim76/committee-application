@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../resources/components/text_button.dart';
@@ -27,11 +28,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
-      create: (BuildContext context) => ForgotPasswordViewModel(),
+      create: (BuildContext context) => ForgotPasswordViewModel(context),
       child: Consumer<ForgotPasswordViewModel>(
         builder: (BuildContext context, ForgotPasswordViewModel model,
                 Widget? child) =>
             Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.kPrimaryColor,
+          ),
           backgroundColor: AppColors.kPrimaryColor,
           body: SingleChildScrollView(
             child: Padding(
@@ -40,7 +44,17 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 50.h,
+                    height: 30.h,
+                  ),
+                  Center(
+                    child: SizedBox(
+                      height: 250.h,
+                      width: 250.w,
+                      child: Lottie.asset("assets/lottie/forgot_password.json"),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Text(
                     "FORGOT PASSWORD",
@@ -65,16 +79,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     icon: Icons.email_outlined,
                   ),
                   SizedBox(
-                    height: 20.h,
-                  ),
-                  SizedBox(
-                    height: 10.h,
+                    height: 100.h,
                   ),
                   LoginSignUpButton(
                     title: "Forgot Password",
                     onPress: () {
-                      model.resetPassword(context, model.emailController.text);
+                      model.resetPassword(model.emailController.text);
                     },
+                    loading: model.isLoading,
                   ),
                 ],
               ),

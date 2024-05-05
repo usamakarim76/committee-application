@@ -33,9 +33,6 @@ class LoginViewModel extends ChangeNotifier {
           .then((value) => {
                 getCurrentUserRole(),
               });
-      isLoading = false;
-      notifyListeners();
-      Utils.successMessage(context, "Log in successfully");
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
@@ -50,16 +47,23 @@ class LoginViewModel extends ChangeNotifier {
         .doc(auth.currentUser!.uid)
         .get();
     if (snapshot.exists) {
-      print("object");
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       if (userData['Role'] == "Admin") {
+        isLoading = false;
+        notifyListeners();
+        Utils.successMessage(context, "Log in successfully");
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.adminDashBoardScreen, (route) => false);
+            context, RouteNames.adminBottomNavBar, (route) => false);
       } else {
+        isLoading = false;
+        notifyListeners();
+        Utils.successMessage(context, "Log in successfully");
         Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.userDashBoardScreen, (route) => false);
+            context, RouteNames.userBottomNavBar, (route) => false);
       }
     } else {
+      isLoading = false;
+      notifyListeners();
       Utils.errorMessage(context, "No user found");
     }
   }

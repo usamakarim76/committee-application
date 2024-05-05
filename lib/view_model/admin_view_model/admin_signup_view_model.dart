@@ -63,7 +63,7 @@ class AdminSignUpViewModel extends ChangeNotifier {
                   notifyListeners(),
                   Utils.successMessage(context, "Registered Successfully"),
                   Navigator.pushNamedAndRemoveUntil(
-                      context, RouteNames.forgotPasswordScreen, (route) => false),
+                      context, RouteNames.loginScreen, (route) => false),
                   signOut(),
                 })
             .onError((error, stackTrace) => {

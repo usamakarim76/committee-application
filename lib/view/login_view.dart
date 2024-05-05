@@ -7,6 +7,7 @@ import 'package:committee_app/utils/utils.dart';
 import 'package:committee_app/view_model/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../resources/components/text_button.dart';
 
@@ -36,7 +37,18 @@ class _LoginViewState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 50.h,
+                      height: 70.h,
+                    ),
+                    Center(
+                      child: SizedBox(
+                        height: 220.h,
+                        width: 200.w,
+                        child:
+                            Lottie.asset("assets/lottie/signInAnimation.json"),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     Text(
                       "SIGN IN",
@@ -95,7 +107,8 @@ class _LoginViewState extends State<LoginView> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, RouteNames.forgotPasswordScreen);
+                          Navigator.pushNamed(
+                              context, RouteNames.forgotPasswordScreen);
                         },
                         style: const ButtonStyle(
                             overlayColor:
