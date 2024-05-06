@@ -27,42 +27,37 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(bottom: 55.h),
-        height: 76.h,
-        width: 70.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.r),
-          color: AppColors.kPrimaryColor,
-          // image: const DecorationImage(fit: BoxFit.,
-          //     image: AssetImage(AppImagesUrl.homeBackGround))
-        ),
-        child: InkWell(
-          onTap: () {
-            print("object");
-          },
-          child: Stack(
-            children: [
-              Center(
-                child: Container(
-                  height: 70.h,
-                  width: 65.w,
-                  decoration: BoxDecoration(
-                      color: AppColors.kSecondaryColor,
-                      borderRadius: BorderRadius.circular(100.r)),
-                ),
-              ),
-              const Center(
-                child: Icon(
-                  Icons.add,
-                  color: AppColors.kPrimaryColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Container(
+      //   margin: EdgeInsets.only(bottom: 55.h),
+      //   height: 76.h,
+      //   width: 70.w,
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(100.r),
+      //     color: AppColors.kPrimaryColor,
+      //     // image: const DecorationImage(fit: BoxFit.,
+      //     //     image: AssetImage(AppImagesUrl.homeBackGround))
+      //   ),
+      //   child: Stack(
+      //     children: [
+      //       Center(
+      //         child: Container(
+      //           height: 70.h,
+      //           width: 65.w,
+      //           decoration: BoxDecoration(
+      //               color: AppColors.kSecondaryColor,
+      //               borderRadius: BorderRadius.circular(100.r)),
+      //         ),
+      //       ),
+      //       const Center(
+      //         child: Icon(
+      //           Icons.add,
+      //           color: AppColors.kPrimaryColor,
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: pages[pageIndex],
       bottomNavigationBar: buildMyNavBar(context),
     );
@@ -88,11 +83,11 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
                 });
               },
               icon: pageIndex == 0
-                  ? Icon(
+                  ? const Icon(
                       Icons.home,
                       color: AppColors.kBlackColor,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.home,
                       color: AppColors.kPrimaryColor,
                     )),
@@ -104,11 +99,11 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
                 });
               },
               icon: pageIndex == 1
-                  ? Icon(
+                  ? const Icon(
                       Icons.person,
                       color: AppColors.kBlackColor,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.person,
                       color: AppColors.kPrimaryColor,
                     )),
@@ -120,11 +115,11 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
                 });
               },
               icon: pageIndex == 2
-                  ? Icon(
+                  ? const Icon(
                       Icons.notifications,
                       color: AppColors.kBlackColor,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.notifications,
                       color: AppColors.kPrimaryColor,
                     )),
@@ -136,11 +131,11 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
                 });
               },
               icon: pageIndex == 3
-                  ? Icon(
+                  ? const Icon(
                       Icons.settings,
                       color: AppColors.kBlackColor,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.settings,
                       color: AppColors.kPrimaryColor,
                     )),

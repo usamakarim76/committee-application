@@ -95,8 +95,8 @@ class _LoginViewState extends State<LoginView> {
                             model.obscureText.value = !model.obscureText.value;
                           },
                           icon: model.obscureText.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
                         );
                       },
                     ),

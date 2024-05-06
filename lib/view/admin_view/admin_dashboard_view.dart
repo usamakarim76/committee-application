@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
@@ -21,6 +23,14 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+  Future deleteToken() async {
+    await firestore
+        .collection(AppConstants.userDataCollectionName)
+        .doc(auth.currentUser!.uid)
+        .update({"DeviceToken": "nulls"});
+    await auth.signOut();
+  }
+
   Future signOutUser() async {
     try {
       if (await googleSignIn.isSignedIn()) {
@@ -28,7 +38,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
         Navigator.pushNamedAndRemoveUntil(
             context, RouteNames.loginScreen, (route) => false);
       } else {
-        await auth.signOut();
+        deleteToken();
         Navigator.pushNamedAndRemoveUntil(
             context, RouteNames.loginScreen, (route) => false);
       }
@@ -54,6 +64,16 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
               },
               icon: const Icon(Icons.logout))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, RouteNames.adminAddCommitteeScreen);
+        },
+        backgroundColor: AppColors.kSecondaryColor,
+        child: const Icon(
+          Icons.add,
+          color: AppColors.kPrimaryColor,
+        ),
       ),
       backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(

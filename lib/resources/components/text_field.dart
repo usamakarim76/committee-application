@@ -14,7 +14,7 @@ class TextFieldWidget extends StatelessWidget {
       required this.textInputType,
       this.obscureText = false,
       required this.onTapFunction,
-      required this.icon});
+      this.icon});
 
   final double width;
   final TextEditingController controller;
@@ -24,7 +24,7 @@ class TextFieldWidget extends StatelessWidget {
   final TextInputType textInputType;
   final bool obscureText;
   final VoidCallback onTapFunction;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {

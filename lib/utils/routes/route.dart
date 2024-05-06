@@ -1,4 +1,5 @@
 import 'package:committee_app/utils/routes/route_name.dart';
+import 'package:committee_app/view/admin_view/admin_add_committee_view.dart';
 import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
 import 'package:committee_app/view/admin_view/admin_signup_view.dart';
 import 'package:committee_app/view/admin_view/admin_bottom_navigation_bar.dart';
@@ -40,6 +41,9 @@ class Routes {
       case RouteNames.userBottomNavBar:
         return MaterialPageRoute(
             builder: (BuildContext context) => const UserBottomNavigationBar());
+      case RouteNames.adminAddCommitteeScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const AdminAddCommitteeView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

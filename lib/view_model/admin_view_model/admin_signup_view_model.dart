@@ -95,6 +95,7 @@ class AdminSignUpViewModel extends ChangeNotifier {
         .doc(auth.currentUser!.uid)
         .set({
       'Id': count + 1,
+      'UserUid' : auth.currentUser!.uid,
       'Name': userName ?? "",
       'Email': userEmail ?? "",
       'PhoneNumber': phoneNumber ?? "",

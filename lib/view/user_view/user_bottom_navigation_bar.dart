@@ -27,42 +27,42 @@ class _UserBottomNavigationBarState extends State<UserBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(bottom: 55.h),
-        height: 76.h,
-        width: 70.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.r),
-          color: AppColors.kPrimaryColor,
-          // image: const DecorationImage(fit: BoxFit.,
-          //     image: AssetImage(AppImagesUrl.homeBackGround))
-        ),
-        child: InkWell(
-          onTap: () {
-            print("object");
-          },
-          child: Stack(
-            children: [
-              Center(
-                child: Container(
-                  height: 70.h,
-                  width: 65.w,
-                  decoration: BoxDecoration(
-                      color: AppColors.kSecondaryColor,
-                      borderRadius: BorderRadius.circular(100.r)),
-                ),
-              ),
-              const Center(
-                child: Icon(
-                  Icons.add,
-                  color: AppColors.kPrimaryColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Container(
+      //   margin: EdgeInsets.only(bottom: 55.h),
+      //   height: 76.h,
+      //   width: 70.w,
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(100.r),
+      //     color: AppColors.kPrimaryColor,
+      //     // image: const DecorationImage(fit: BoxFit.,
+      //     //     image: AssetImage(AppImagesUrl.homeBackGround))
+      //   ),
+      //   child: InkWell(
+      //     onTap: () {
+      //       print("object");
+      //     },
+      //     child: Stack(
+      //       children: [
+      //         Center(
+      //           child: Container(
+      //             height: 70.h,
+      //             width: 65.w,
+      //             decoration: BoxDecoration(
+      //                 color: AppColors.kSecondaryColor,
+      //                 borderRadius: BorderRadius.circular(100.r)),
+      //           ),
+      //         ),
+      //         const Center(
+      //           child: Icon(
+      //             Icons.add,
+      //             color: AppColors.kPrimaryColor,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       body: pages[pageIndex],
       bottomNavigationBar: buildMyNavBar(context),
     );

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:committee_app/resources/app_notification.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
@@ -8,7 +9,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginViewModel extends ChangeNotifier {
   BuildContext context;
-  LoginViewModel(this.context);
+  LoginViewModel(this.context) {
+    getDeviceToken();
+  }
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -18,8 +21,15 @@ class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  AppNotifications appNotifications = AppNotifications();
   String error = '';
+  String? deviceToken;
   bool isLoading = false, isGoogleLoading = false;
+
+  Future getDeviceToken() async {
+    deviceToken = await appNotifications.getDeviceToken();
+    deviceTokenToFireStore(deviceToken!);
+  }
 
   Future<void> signIn() async {
     try {
@@ -47,17 +57,16 @@ class LoginViewModel extends ChangeNotifier {
         .doc(auth.currentUser!.uid)
         .get();
     if (snapshot.exists) {
+      getDeviceToken();
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       if (userData['Role'] == "Admin") {
         isLoading = false;
         notifyListeners();
-        Utils.successMessage(context, "Log in successfully");
         Navigator.pushNamedAndRemoveUntil(
             context, RouteNames.adminBottomNavBar, (route) => false);
       } else {
         isLoading = false;
         notifyListeners();
-        Utils.successMessage(context, "Log in successfully");
         Navigator.pushNamedAndRemoveUntil(
             context, RouteNames.userBottomNavBar, (route) => false);
       }
@@ -66,6 +75,13 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
       Utils.errorMessage(context, "No user found");
     }
+  }
+
+  Future deviceTokenToFireStore(String token) async {
+    await firestore
+        .collection(AppConstants.userDataCollectionName)
+        .doc(auth.currentUser!.uid)
+        .update({"DeviceToken": token});
   }
 
   Future<void> googleSignIn() async {
@@ -84,7 +100,7 @@ class LoginViewModel extends ChangeNotifier {
             accessToken: googleSignInAuthentication.accessToken);
         UserCredential result = await auth.signInWithCredential(authCredential);
         User? user = result.user;
-        dataToFirestore(user!.displayName, user.email);
+        // dataToFirestore(user!.displayName, user.email);
         Utils.successMessage(context, "Log in successfully");
         isGoogleLoading = false;
         notifyListeners();
@@ -101,13 +117,13 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future dataToFirestore(name, email) async {
-    await firestore
-        .collection(AppConstants.userDataCollectionName)
-        .doc(auth.currentUser!.uid)
-        .set({
-      'Name': name,
-      'Email': email,
-    });
-  }
+  // Future dataToFirestore(name, email) async {
+  //   await firestore
+  //       .collection(AppConstants.userDataCollectionName)
+  //       .doc(auth.currentUser!.uid)
+  //       .set({
+  //     'Name': name,
+  //     'Email': email,
+  //   });
+  // }
 }
