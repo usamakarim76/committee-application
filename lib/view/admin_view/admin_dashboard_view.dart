@@ -27,7 +27,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
     await firestore
         .collection(AppConstants.userDataCollectionName)
         .doc(auth.currentUser!.uid)
-        .update({"DeviceToken": "nulls"});
+        .update({"DeviceToken": "null"});
     await auth.signOut();
   }
 
