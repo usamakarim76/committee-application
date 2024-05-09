@@ -6,10 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool check;
   // final VoidCallback onPress;
   const AppBarWidget({
     super.key,
     required this.title,
+    this.check = false,
     // required this.onPress ,
   });
 
@@ -22,7 +24,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         style: textTheme.titleMedium!
             .copyWith(color: AppColors.kBlackColor, fontSize: 18.sp),
       ),
-      iconTheme: const IconThemeData(color: AppColors.kSelectColor, size: 30),
+      automaticallyImplyLeading: check,
+      iconTheme:
+          check ? const IconThemeData(color: AppColors.kBlackColor) : null,
       scrolledUnderElevation: 0,
       centerTitle: true,
       // actions: [

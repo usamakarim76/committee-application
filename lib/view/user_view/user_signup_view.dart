@@ -198,6 +198,8 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                           }
                         }
                       },
+                      width: 1.sw,
+                      height: 60.h,
                       loading: model.isLoading,
                     ),
                     SizedBox(
@@ -225,7 +227,8 @@ class _UserSignUpViewState extends State<UserSignUpView> {
                           print("Asdsada");
                           Navigator.pushReplacementNamed(
                               context, RouteNames.adminSignUpScreen);
-                        }),
+                        },height: 60.h,
+                    width: 1.sw,),
                     // SocialButtonWidget(
                     //     title: "Continue with Google",
                     //     loading: model.isGoogleLoading,

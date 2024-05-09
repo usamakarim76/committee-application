@@ -9,11 +9,15 @@ class LoginSignUpButton extends StatelessWidget {
   final String title;
   final bool loading;
   final VoidCallback onPress;
+  final double height;
+  final double width;
   const LoginSignUpButton(
       {super.key,
       required this.title,
       this.loading = false,
-      required this.onPress});
+      required this.onPress,
+      this.height = 50,
+      this.width = 300});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,8 @@ class LoginSignUpButton extends StatelessWidget {
       onTap: onPress,
       overlayColor: const MaterialStatePropertyAll(AppColors.kWhiteColor),
       child: Container(
-        height: 60.h,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
             color: AppColors.kSecondaryColor,
             borderRadius: BorderRadius.circular(10.r)),

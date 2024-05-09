@@ -18,7 +18,7 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   List members = [];
-  bool isLoading = false;
+  bool isLoading = false, nameExists = false;
 
   Future committeeDataToFireStore() async {
     isLoading = true;
@@ -54,6 +54,23 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
               isLoading = false,
               notifyListeners(),
             });
+  }
+
+  Future<void> checkDuplicateName() async {
+    final String name = committeeNameController.text.trim();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(AppConstants.adminCommittee)
+        .where('committee_name', isEqualTo: name)
+        .get();
+    nameExists = querySnapshot.docs.isNotEmpty;
+    isLoading = false;
+    notifyListeners();
+    if (nameExists) {
+      Utils.errorMessage(
+          context, 'Committee name already exists, use unique name');
+    } else {
+      committeeDataToFireStore();
+    }
   }
 
   Future<void> selectStartDate() async {

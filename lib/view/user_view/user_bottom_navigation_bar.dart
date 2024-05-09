@@ -1,5 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
-import 'package:committee_app/view/user_view/user_account_view.dart';
+import 'package:committee_app/view/user_view/user_settings_view.dart';
 import 'package:committee_app/view/user_view/user_dashboard_view.dart';
 import 'package:committee_app/view/user_view/user_joined_committe_view.dart';
 import 'package:committee_app/view/user_view/user_notification_view.dart';

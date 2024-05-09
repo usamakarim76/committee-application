@@ -158,9 +158,11 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                           model.endDate == null) {
                         Utils.errorMessage(context, "All fields are required");
                       } else {
-                        model.committeeDataToFireStore();
+                        model.checkDuplicateName();
                       }
                     },
+                    height: 60.h,
+                    width: 1.sw,
                     loading: model.isLoading,
                   ),
                   SizedBox(

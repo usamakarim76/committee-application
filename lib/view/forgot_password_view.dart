@@ -86,6 +86,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     onPress: () {
                       model.resetPassword(model.emailController.text);
                     },
+                    width: 1.sw,
+                    height: 60.h,
                     loading: model.isLoading,
                   ),
                 ],

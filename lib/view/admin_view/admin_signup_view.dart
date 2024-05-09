@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/components/text_field.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/utils.dart';
 import 'package:committee_app/view_model/admin_view_model/admin_signup_view_model.dart';
-import 'package:committee_app/view_model/user_view_model/signup_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +22,6 @@ class AdminSignUpView extends StatefulWidget {
 class _AdminSignUpViewState extends State<AdminSignUpView> {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
       create: (BuildContext context) => AdminSignUpViewModel(context),
       child: Consumer<AdminSignUpViewModel>(
@@ -98,7 +95,7 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                       height: 20.h,
                     ),
                     TextFieldWidget(
-                      width: width,
+                      width: 1.sw,
                       node: model.adminNameNode,
                       title: "Name",
                       controller: model.adminNameController,
@@ -114,7 +111,7 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                       height: 20.h,
                     ),
                     TextFieldWidget(
-                      width: width,
+                      width: 1.sw,
                       node: model.adminEmailNode,
                       title: "Email",
                       controller: model.adminEmailController,
@@ -130,7 +127,7 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                       height: 20.h,
                     ),
                     TextFieldWidget(
-                      width: width,
+                      width: 1.sw,
                       node: model.adminPhoneNode,
                       title: "Phone Number",
                       controller: model.adminPhoneNumberController,
@@ -146,7 +143,7 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                       height: 20.h,
                     ),
                     TextFieldWidget(
-                      width: width,
+                      width: 1.sw,
                       node: model.adminAddressNode,
                       title: "Address",
                       controller: model.adminAddressController,
@@ -165,7 +162,7 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                       valueListenable: model.obscureText,
                       builder: (context, value, child) {
                         return TextFieldWidget(
-                          width: width,
+                          width: 1.sw,
                           node: model.adminPasswordNode,
                           controller: model.adminPasswordController,
                           title: 'Password',
@@ -198,6 +195,8 @@ class _AdminSignUpViewState extends State<AdminSignUpView> {
                           }
                         }
                       },
+                      width: 1.sw,
+                      height: 60.h,
                       loading: model.isLoading,
                     ),
                     SizedBox(

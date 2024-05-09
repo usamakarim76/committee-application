@@ -135,6 +135,8 @@ class _LoginViewState extends State<LoginView> {
                           }
                         }
                       },
+                      width: 1.sw,
+                      height: 60.h,
                       loading: model.isLoading,
                     ),
                     // SizedBox(
