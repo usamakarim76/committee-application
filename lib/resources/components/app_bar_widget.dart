@@ -6,11 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final VoidCallback onPress;
+  // final VoidCallback onPress;
   const AppBarWidget({
     super.key,
     required this.title,
-    required this.onPress ,
+    // required this.onPress ,
   });
 
   @override
@@ -20,32 +20,32 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: textTheme.titleMedium!
-            .copyWith(color: AppColors.kWhiteColor, fontSize: 18.sp),
+            .copyWith(color: AppColors.kBlackColor, fontSize: 18.sp),
       ),
       iconTheme: const IconThemeData(color: AppColors.kSelectColor, size: 30),
       scrolledUnderElevation: 0,
       centerTitle: true,
-      actions: [
-        IconButton(
-          onPressed: onPress,
-          icon: const Icon(
-            Icons.add,
-            size: 30,
-            color: AppColors.kSelectColor,
-          ),
-        ),
-        SizedBox(
-          width: 10.w,
-        ),
-        SizedBox(
-          height: 35.h,
-          width: 35.w,
-          child: Image.asset(AppImagesUrl.homePersonLogo),
-        ),
-        SizedBox(
-          width: 15.w,
-        )
-      ],
+      // actions: [
+      //   IconButton(
+      //     onPressed: onPress,
+      //     icon: const Icon(
+      //       Icons.add,
+      //       size: 30,
+      //       color: AppColors.kSelectColor,
+      //     ),
+      //   ),
+      //   SizedBox(
+      //     width: 10.w,
+      //   ),
+      //   SizedBox(
+      //     height: 35.h,
+      //     width: 35.w,
+      //     child: Image.asset(AppImagesUrl.homePersonLogo),
+      //   ),
+      //   SizedBox(
+      //     width: 15.w,
+      //   )
+      // ],
     );
   }
 

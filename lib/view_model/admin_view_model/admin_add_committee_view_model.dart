@@ -17,16 +17,22 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   DateTime? startDate, endDate;
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  List members=[];
+  List members = [];
   bool isLoading = false;
 
   Future committeeDataToFireStore() async {
     isLoading = true;
     notifyListeners();
+    CollectionReference user =
+        fireStore.collection(AppConstants.adminCommittee);
+    QuerySnapshot querySnapshot = await user.get();
+    int count = querySnapshot.docs.length;
     await fireStore
         .collection(AppConstants.adminCommittee)
         .doc(committeeNameController.text)
         .set({
+          "id": count + 1,
+          "user_uid": auth.currentUser!.uid,
           "committee_name": committeeNameController.text.toString(),
           "number_of_members": committeeMemberController.text,
           "total_amount": committeeAmountController.text,
@@ -41,7 +47,7 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
               Utils.successMessage(context, "Committee created successfully"),
               isLoading = false,
               notifyListeners(),
-      Navigator.pop(context),
+              Navigator.pop(context),
             })
         .onError((error, stackTrace) => {
               Utils.errorMessage(context, error.toString()),

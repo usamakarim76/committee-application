@@ -9,9 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginViewModel extends ChangeNotifier {
   BuildContext context;
-  LoginViewModel(this.context) {
-    getDeviceToken();
-  }
+  LoginViewModel(this.context);
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
