@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:committee_app/resources/app_notification.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
@@ -20,10 +21,13 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  AppNotifications appNotifications = AppNotifications();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    appNotifications.requestNotificationsPermissions();
+    appNotifications.foregroundMessage();
     Future.delayed(
       const Duration(seconds: 2),
       () {

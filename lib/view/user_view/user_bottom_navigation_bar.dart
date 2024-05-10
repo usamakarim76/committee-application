@@ -1,3 +1,4 @@
+import 'package:committee_app/resources/app_notification.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/view/user_view/user_settings_view.dart';
 import 'package:committee_app/view/user_view/user_dashboard_view.dart';
@@ -16,6 +17,7 @@ class UserBottomNavigationBar extends StatefulWidget {
 
 class _UserBottomNavigationBarState extends State<UserBottomNavigationBar> {
   int pageIndex = 0;
+  AppNotifications appNotifications = AppNotifications();
 
   final pages = [
     const UserDashBoardView(),
@@ -23,6 +25,13 @@ class _UserBottomNavigationBarState extends State<UserBottomNavigationBar> {
     const UserNotificationView(),
     const UserSettingsView()
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    appNotifications.firebaseNotificationsInitialization(context);
+    appNotifications.setUpInteractMessage(context);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

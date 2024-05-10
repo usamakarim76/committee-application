@@ -1,3 +1,4 @@
+import 'package:committee_app/resources/app_notification.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
 import 'package:committee_app/view/admin_view/admin_notification_view.dart';
@@ -16,6 +17,7 @@ class AdminBottomNavigationBar extends StatefulWidget {
 
 class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
   int pageIndex = 0;
+  AppNotifications appNotifications = AppNotifications();
 
   final pages = [
     const AdminDashBoardView(),
@@ -23,6 +25,13 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
     const AdminNotificationView(),
     const AdminSettingsView()
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    appNotifications.firebaseNotificationsInitialization(context);
+    appNotifications.setUpInteractMessage(context);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

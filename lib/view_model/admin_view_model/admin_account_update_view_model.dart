@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/components/pop_over_widget.dart';
 import 'package:committee_app/resources/constants.dart';
@@ -15,7 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AdminAccountUpdateViewModel extends ChangeNotifier {
-  AdminAccountUpdateViewModel(this.context);
+  AdminAccountUpdateViewModel(this.context) {
+    getUserData();
+  }
   BuildContext context;
   ImagePicker imagePicker = ImagePicker();
   String adminImage = '';
@@ -25,17 +26,29 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
   FocusNode adminNameNode = FocusNode();
   FocusNode adminPhoneNode = FocusNode();
   FocusNode adminAddressNode = FocusNode();
-  FocusNode adminPasswordNode = FocusNode();
   final FirebaseAuth auth = FirebaseAuth.instance;
   fs.FirebaseStorage storage = fs.FirebaseStorage.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String? imageURL, error;
-  bool isLoading = false;
+  bool isLoading = false, dataLoad = false;
 
-  Future getUserData()async{
-     await firestore.collection(AppConstants.userDataCollectionName).doc(auth.currentUser!.uid).get();
+  Future getUserData() async {
+    dataLoad = true;
+    notifyListeners();
+    if (auth.currentUser != null) {
+      final DocumentSnapshot data = await firestore
+          .collection(AppConstants.userDataCollectionName)
+          .doc(auth.currentUser!.uid)
+          .get();
+      if (data.exists) {
+        adminNameController.text = data['Name'];
+        adminPhoneNumberController.text = data['PhoneNumber'];
+        adminAddressController.text = data['Address'];
+        dataLoad = false;
+        notifyListeners();
+      }
+    }
   }
-
 
   Future updateAdminAccount() async {
     try {
