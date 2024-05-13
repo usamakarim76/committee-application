@@ -111,7 +111,9 @@ class _UserJoinedCommitteeViewState extends State<UserJoinedCommitteeView> {
                                 LoginSignUpButton(
                                   title: "Join",
                                   onPress: () {
-                                    model.sendNotificationToAdmin();
+                                    print(
+                                        snapshot.data!.docs[index]['user_uid']);
+                                    model.getCurrentUserData(snapshot.data!.docs[index]['user_uid'].toString());
                                   },
                                   width: 120.w,
                                   height: 45.h,
