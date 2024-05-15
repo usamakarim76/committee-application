@@ -6,7 +6,6 @@ import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/view_model/user_view_model/join_committee_view_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +24,7 @@ class _UserJoinedCommitteeViewState extends State<UserJoinedCommitteeView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => UserJoinCommitteeViewModel(),
+      create: (BuildContext context) => UserJoinCommitteeViewModel(context),
       child: Consumer<UserJoinCommitteeViewModel>(
         builder: (BuildContext context, UserJoinCommitteeViewModel model,
                 Widget? child) =>
@@ -113,7 +112,9 @@ class _UserJoinedCommitteeViewState extends State<UserJoinedCommitteeView> {
                                   onPress: () {
                                     print(
                                         snapshot.data!.docs[index]['user_uid']);
-                                    model.getCurrentUserData(snapshot.data!.docs[index]['user_uid'].toString());
+                                    model.getCurrentUserData(snapshot
+                                        .data!.docs[index]['user_uid']
+                                        .toString());
                                   },
                                   width: 120.w,
                                   height: 45.h,

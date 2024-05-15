@@ -90,7 +90,7 @@ class SignUpViewModel extends ChangeNotifier {
         .doc(auth.currentUser!.uid)
         .set({
       'Id': count + 1,
-      'UserUid' : auth.currentUser!.uid,
+      'UserUid': auth.currentUser!.uid,
       'Name': userName ?? "",
       'Email': userEmail ?? "",
       'PhoneNumber': phoneNumber ?? "",
@@ -124,14 +124,15 @@ class SignUpViewModel extends ChangeNotifier {
                   Utils.successMessage(context, "Log in successfully"),
                   isGoogleLoading = false,
                   notifyListeners(),
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, RouteNames.adminDashBoardScreen, (route) => false),
+                  Navigator.pushNamedAndRemoveUntil(context,
+                      RouteNames.adminDashBoardScreen, (route) => false),
                 })
             .onError((error, stackTrace) => {
                   Utils.errorMessage(context, error),
                 });
         isGoogleLoading = false;
         notifyListeners();
+        createNotificationListFireStore();
       }
     } on FirebaseAuthException catch (e) {
       isGoogleLoading = false;
@@ -140,13 +141,20 @@ class SignUpViewModel extends ChangeNotifier {
     }
   }
 
+  Future createNotificationListFireStore() async {
+    print("in Notification");
+    await firestore
+        .collection(AppConstants.notification)
+        .doc(auth.currentUser!.uid)
+        .set({'notification': []});
+  }
+
   // Method to upload image to Firebase Storage
   Future<String?> uploadImageToFirebase(File imageFile) async {
     try {
       String imageName = DateTime.now().millisecondsSinceEpoch.toString();
-      fs.Reference storageReference = storage
-          .ref()
-          .child('images/${userNameController.text + imageName}');
+      fs.Reference storageReference =
+          storage.ref().child('images/${userNameController.text + imageName}');
       fs.UploadTask uploadTask = storageReference.putFile(imageFile);
       fs.TaskSnapshot storageSnapshot =
           await uploadTask.whenComplete(() => null);

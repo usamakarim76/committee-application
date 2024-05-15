@@ -9,6 +9,7 @@ import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fs;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +39,7 @@ class AdminSignUpViewModel extends ChangeNotifier {
   String error = '', adminImage = '';
   String? imageURL;
   bool isLoading = false, isGoogleLoading = false;
+  List notification = [], requests = [];
 
   Future registerAdmin() async {
     try {
@@ -59,9 +61,9 @@ class AdminSignUpViewModel extends ChangeNotifier {
                 adminAddressController.text,
                 imageURL)
             .then((value) => {
+                  Utils.successMessage(context, "Registered Successfully"),
                   isLoading = false,
                   notifyListeners(),
-                  Utils.successMessage(context, "Registered Successfully"),
                   Navigator.pushNamedAndRemoveUntil(
                       context, RouteNames.loginScreen, (route) => false),
                   signOut(),
@@ -71,6 +73,8 @@ class AdminSignUpViewModel extends ChangeNotifier {
                 });
         isLoading = false;
         notifyListeners();
+        createRequestsListFireStore();
+        createNotificationListFireStore();
       });
     } on FirebaseAuthException catch (e) {
       isLoading = false;
@@ -84,6 +88,23 @@ class AdminSignUpViewModel extends ChangeNotifier {
     await auth.signOut();
   }
 
+  Future createNotificationListFireStore() async {
+    print("in Notification");
+    await firestore
+        .collection(AppConstants.notification)
+        .doc(auth.currentUser!.uid)
+        .set({'notification': notification});
+  }
+
+  Future createRequestsListFireStore() async {
+    print("in Requests");
+
+    await firestore
+        .collection(AppConstants.committeeRequests)
+        .doc(auth.currentUser!.uid)
+        .set({'requests': requests});
+  }
+
   Future dataToFireStore(
       userName, userEmail, phoneNumber, userAddress, image) async {
     CollectionReference user =
@@ -95,7 +116,7 @@ class AdminSignUpViewModel extends ChangeNotifier {
         .doc(auth.currentUser!.uid)
         .set({
       'Id': count + 1,
-      'UserUid' : auth.currentUser!.uid,
+      'UserUid': auth.currentUser!.uid,
       'Name': userName ?? "",
       'Email': userEmail ?? "",
       'PhoneNumber': phoneNumber ?? "",
