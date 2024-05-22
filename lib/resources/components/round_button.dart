@@ -11,13 +11,15 @@ class LoginSignUpButton extends StatelessWidget {
   final VoidCallback onPress;
   final double height;
   final double width;
+  final Color buttonColor;
   const LoginSignUpButton(
       {super.key,
       required this.title,
       this.loading = false,
       required this.onPress,
       this.height = 50,
-      this.width = 300});
+      this.width = 300,
+      this.buttonColor = AppColors.kSecondaryColor});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,7 @@ class LoginSignUpButton extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-            color: AppColors.kSecondaryColor,
-            borderRadius: BorderRadius.circular(10.r)),
+            color: buttonColor, borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: loading
               ? const LoadingWidget(
