@@ -81,7 +81,9 @@ class _AdminSettingsViewState extends State<AdminSettingsView> {
                       Navigator.pushNamed(context, RouteNames.adminAccountUpdateScreen);
                     }, 1.sw),
                     profileLisTile(
-                        "Terms and conditions", Icons.newspaper, () {}, 1.sw),
+                        "Terms and conditions", Icons.newspaper, () {
+                          Navigator.pushNamed(context, RouteNames.termsAndConditions);
+                    }, 1.sw),
                     profileLisTile("Logout", Icons.login_outlined, () async {
                       showDialog(
                           barrierDismissible: true,

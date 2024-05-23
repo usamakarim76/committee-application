@@ -10,4 +10,5 @@ class RouteNames {
   static const String userBottomNavBar = "user_bottom_nav_bar";
   static const String adminAddCommitteeScreen = "add_committee";
   static const String adminAccountUpdateScreen = "update_account";
+  static const String termsAndConditions = "terms_and_conditions";
 }

@@ -6,6 +6,7 @@ import 'package:committee_app/view/admin_view/admin_signup_view.dart';
 import 'package:committee_app/view/admin_view/admin_bottom_navigation_bar.dart';
 import 'package:committee_app/view/forgot_password_view.dart';
 import 'package:committee_app/view/login_view.dart';
+import 'package:committee_app/view/terms_and_conditions_view.dart';
 import 'package:committee_app/view/user_view/user_bottom_navigation_bar.dart';
 import 'package:committee_app/view/user_view/user_dashboard_view.dart';
 import 'package:committee_app/view/user_view/user_signup_view.dart';
@@ -48,6 +49,9 @@ class Routes {
       case RouteNames.adminAccountUpdateScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => const AdminAccountUpdateView());
+      case RouteNames.termsAndConditions:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const TermsAndConditionsView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

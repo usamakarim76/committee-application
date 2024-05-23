@@ -78,56 +78,58 @@ class _UserSettingsViewState extends State<UserSettingsView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     profileLisTile("Account", Icons.settings, () {}, 1.sw),
-                    profileLisTile(
-                        "Terms and conditions", Icons.newspaper, () {}, 1.sw),
+                    profileLisTile("Terms and conditions", Icons.newspaper, () {
+                      Navigator.pushNamed(
+                          context, RouteNames.termsAndConditions);
+                    }, 1.sw),
                     profileLisTile("Logout", Icons.login_outlined, () async {
                       showDialog(
                           barrierDismissible: true,
                           context: context,
                           builder: (context) => AlertDialog(
-                            backgroundColor: const Color(0xffffffff),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            title: Center(
-                              child: Text("Notice",
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.titleMedium),
-                            ),
-                            actions: <Widget>[
-                              Center(
-                                  child: Text(
+                                backgroundColor: const Color(0xffffffff),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                title: Center(
+                                  child: Text("Notice",
+                                      textAlign: TextAlign.center,
+                                      style: textTheme.titleMedium),
+                                ),
+                                actions: <Widget>[
+                                  Center(
+                                      child: Text(
                                     "Are you sure to Log Out",
                                     style: textTheme.titleSmall,
                                   )),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Center(
-                                    child: LoginSignUpButton(
-                                      title: "No",
-                                      onPress: () {},
-                                      width: 130.w,
-                                      height: 50.h,
-                                    ),
+                                  SizedBox(
+                                    height: 30.h,
                                   ),
-                                  Center(
-                                    child: LoginSignUpButton(
-                                      title: "Yes",
-                                      onPress: () {
-                                        signOutUser();
-                                      },
-                                      width: 130.w,
-                                      height: 50.h,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Center(
+                                        child: LoginSignUpButton(
+                                          title: "No",
+                                          onPress: () {},
+                                          width: 130.w,
+                                          height: 50.h,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: LoginSignUpButton(
+                                          title: "Yes",
+                                          onPress: () {
+                                            signOutUser();
+                                          },
+                                          width: 130.w,
+                                          height: 50.h,
+                                        ),
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
-                          ));
+                              ));
                     }, 1.sw),
                   ],
                 ),
