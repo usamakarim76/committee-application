@@ -39,9 +39,9 @@ class AdminRequestViewModel extends ChangeNotifier {
       var ref = fireStore
           .collection(AppConstants.committeeRequests)
           .doc(auth.currentUser!.uid);
-      await ref.update({'requests': FieldValue.arrayRemove([userUid])}).then((value) => {
-        rejectRequestDataToNotification(userUid, "name")
-      });
+      await ref.update({
+        'requests': FieldValue.arrayRemove([userUid])
+      }).then((value) => {rejectRequestDataToNotification(userUid, "name")});
       isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -54,8 +54,8 @@ class AdminRequestViewModel extends ChangeNotifier {
   Future rejectRequestDataToNotification(user, name) async {
     var ref = fireStore.collection(AppConstants.notification).doc(user);
     ref.update({
-      'notification':
-      FieldValue.arrayUnion(["$name wants to join your committee"]),
+      'notification': FieldValue.arrayUnion(
+          ["$name reject your Committee joining request"]),
     });
   }
 }
