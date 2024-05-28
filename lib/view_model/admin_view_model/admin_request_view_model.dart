@@ -40,7 +40,7 @@ class AdminRequestViewModel extends ChangeNotifier {
           .collection(AppConstants.committeeRequests)
           .doc(auth.currentUser!.uid);
       await ref.update({'requests': FieldValue.arrayRemove([userUid])}).then((value) => {
-        sendDataToUserNotification(userUid, name)
+        rejectRequestDataToNotification(userUid, "name")
       });
       isLoading = false;
       notifyListeners();
@@ -51,7 +51,7 @@ class AdminRequestViewModel extends ChangeNotifier {
     }
   }
 
-  Future sendDataToUserNotification(user, name) async {
+  Future rejectRequestDataToNotification(user, name) async {
     var ref = fireStore.collection(AppConstants.notification).doc(user);
     ref.update({
       'notification':
