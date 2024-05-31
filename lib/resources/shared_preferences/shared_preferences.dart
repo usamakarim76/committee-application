@@ -16,51 +16,51 @@ class SharedPreferencesHelper {
   }
 
   // Get username
-  Future<String?> getUsername() async {
+  static Future<String?> getUsername() async {
     final prefs = await _getPrefs();
     return prefs.getString(_keyUsername);
   }
 
   // Save user ID
-  Future<void> setUserId(String userId) async {
+  static Future<void> setUserId(String userId) async {
     final prefs = await _getPrefs();
     await prefs.setString(_keyUserId, userId);
   }
 
   // Get user ID
-  Future<String?> getUserId() async {
+  static Future<String?> getUserId() async {
     final prefs = await _getPrefs();
     return prefs.getString(_keyUserId);
   }
 
   // Remove all saved preferences
-  Future<void> clearAll() async {
+  static Future<void> clearAll() async {
     final prefs = await _getPrefs();
     await prefs.clear();
   }
 
   // Add more fields as needed
   // Save email
-  Future<void> setEmail(String email) async {
+  static Future<void> setEmail(String email) async {
     final prefs = await _getPrefs();
     await prefs.setString('email', email);
   }
 
   // Get email
-  Future<String?> getEmail() async {
+  static Future<String?> getEmail() async {
     final prefs = await _getPrefs();
     return prefs.getString('email');
   }
 
-  // Save age
-  Future<void> setAge(int age) async {
-    final prefs = await _getPrefs();
-    await prefs.setInt('age', age);
-  }
-
-  // Get age
-  Future<int?> getAge() async {
-    final prefs = await _getPrefs();
-    return prefs.getInt('age');
-  }
+  // // Save age
+  // static Future<void> setAge(int age) async {
+  //   final prefs = await _getPrefs();
+  //   await prefs.setInt('age', age);
+  // }
+  //
+  // // Get age
+  // static Future<int?> getAge() async {
+  //   final prefs = await _getPrefs();
+  //   return prefs.getInt('age');
+  // }
 }

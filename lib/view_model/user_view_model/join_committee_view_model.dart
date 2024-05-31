@@ -18,6 +18,8 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   Future getCurrentUserData(adminUid) async {
+    isLoading = true;
+    notifyListeners();
     try {
       final DocumentSnapshot data = await fireStore
           .collection(AppConstants.userDataCollectionName)
@@ -29,6 +31,8 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
         sendNotificationToAdmin(userName, adminUid);
       }
     } catch (e) {
+      isLoading = false;
+      notifyListeners();
       sendNotificationToAdmin("Someone", adminUid);
     }
   }

@@ -63,15 +63,16 @@ class LoginViewModel extends ChangeNotifier {
       if (userData['Role'] == "Admin") {
         isLoading = false;
         notifyListeners();
-        // Navigator.pushNamedAndRemoveUntil(
-        //     context, RouteNames.adminBottomNavBar, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteNames.adminBottomNavBar, (route) => false);
       } else {
         isLoading = false;
         notifyListeners();
-        // Navigator.pushNamedAndRemoveUntil(
-        //     context, RouteNames.userBottomNavBar, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteNames.userBottomNavBar, (route) => false);
       }
-      await SharedPreferencesHelper.
+      await SharedPreferencesHelper.setUsername(userData['Name']);
+      await SharedPreferencesHelper.setEmail(userData['Email']);
     } else {
       isLoading = false;
       notifyListeners();

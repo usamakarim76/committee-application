@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
+import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/images_url.dart';
 import 'package:committee_app/resources/text_constants.dart';
@@ -44,12 +45,7 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                       style: textTheme.titleMedium,
                     );
                   } else if (snapshot.data!.isEmpty) {
-                    return Center(
-                      child: SizedBox(
-                          height: 300.h,
-                          width: 300.w,
-                          child: Lottie.asset(AppAssetsUrl.noDataAvailable)),
-                    );
+                    return const NoDataAvailableWidget();
                   } else {
                     return SingleChildScrollView(
                       child: Container(
