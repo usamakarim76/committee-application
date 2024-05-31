@@ -18,9 +18,8 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   Future getCurrentUserData(adminUid) async {
-    isLoading = true;
-    notifyListeners();
     try {
+      Utils.showLoading();
       final DocumentSnapshot data = await fireStore
           .collection(AppConstants.userDataCollectionName)
           .doc(auth.currentUser!.uid)
@@ -48,6 +47,8 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
         print(requests.contains(auth.currentUser!.uid));
       }
       if (requests.contains(auth.currentUser!.uid)) {
+        isLoading = false;
+        notifyListeners();
         Utils.errorMessage(context, "Request already send");
       } else {
         var data = await fireStore

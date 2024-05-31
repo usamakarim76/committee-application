@@ -1,6 +1,7 @@
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Utils {
   static void focusNodeChange(
@@ -30,5 +31,11 @@ class Utils {
       duration: const Duration(seconds: 1),
       // animation: ,
     ));
+  }
+
+  static void showLoading(){
+    EasyLoading.show(
+      status: "Loading..."
+    );
   }
 }
