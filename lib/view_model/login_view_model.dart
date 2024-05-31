@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/app_notification.dart';
 import 'package:committee_app/resources/constants.dart';
+import 'package:committee_app/resources/shared_preferences/shared_preferences.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -57,17 +58,20 @@ class LoginViewModel extends ChangeNotifier {
     if (snapshot.exists) {
       getDeviceToken();
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+
+      print(userData);
       if (userData['Role'] == "Admin") {
         isLoading = false;
         notifyListeners();
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.adminBottomNavBar, (route) => false);
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, RouteNames.adminBottomNavBar, (route) => false);
       } else {
         isLoading = false;
         notifyListeners();
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.userBottomNavBar, (route) => false);
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, RouteNames.userBottomNavBar, (route) => false);
       }
+      await SharedPreferencesHelper.
     } else {
       isLoading = false;
       notifyListeners();
@@ -115,13 +119,4 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  // Future dataToFirestore(name, email) async {
-  //   await firestore
-  //       .collection(AppConstants.userDataCollectionName)
-  //       .doc(auth.currentUser!.uid)
-  //       .set({
-  //     'Name': name,
-  //     'Email': email,
-  //   });
-  // }
 }

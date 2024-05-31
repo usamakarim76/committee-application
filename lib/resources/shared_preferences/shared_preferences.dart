@@ -5,21 +5,12 @@ class SharedPreferencesHelper {
   static const String _keyUsername = 'username';
   static const String _keyUserId = 'userId';
 
-  // Singleton instance
-  static final SharedPreferencesHelper _instance = SharedPreferencesHelper._internal();
-
-  factory SharedPreferencesHelper() {
-    return _instance;
-  }
-
-  SharedPreferencesHelper._internal();
-
-  Future<SharedPreferences> _getPrefs() async {
+  static Future<SharedPreferences> _getPrefs() async {
     return await SharedPreferences.getInstance();
   }
 
   // Save username
-  Future<void> setUsername(String username) async {
+  static Future<void> setUsername(String username) async {
     final prefs = await _getPrefs();
     await prefs.setString(_keyUsername, username);
   }
