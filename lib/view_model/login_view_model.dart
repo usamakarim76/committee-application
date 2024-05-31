@@ -18,7 +18,7 @@ class LoginViewModel extends ChangeNotifier {
   ValueNotifier<bool> obscureText = ValueNotifier<bool>(true);
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   AppNotifications appNotifications = AppNotifications();
   String error = '';
   String? deviceToken;
@@ -50,7 +50,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future getCurrentUserRole() async {
-    DocumentSnapshot snapshot = await firestore
+    DocumentSnapshot snapshot = await fireStore
         .collection(AppConstants.userDataCollectionName)
         .doc(auth.currentUser!.uid)
         .get();
@@ -76,7 +76,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future deviceTokenToFireStore(String token) async {
-    await firestore
+    await fireStore
         .collection(AppConstants.userDataCollectionName)
         .doc(auth.currentUser!.uid)
         .update({"DeviceToken": token});
