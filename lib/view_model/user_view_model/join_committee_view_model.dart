@@ -40,7 +40,9 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
         .get();
     if (checkUser.exists) {
       List<dynamic> requests = checkUser.data()!['requests'];
-      print(requests.contains(auth.currentUser!.uid));
+      if (kDebugMode) {
+        print(requests.contains(auth.currentUser!.uid));
+      }
       if (requests.contains(auth.currentUser!.uid)) {
         Utils.errorMessage(context, "Request already send");
       } else {
