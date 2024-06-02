@@ -111,7 +111,9 @@ class _UserSettingsViewState extends State<UserSettingsView> {
                                       Center(
                                         child: LoginSignUpButton(
                                           title: "No",
-                                          onPress: () {},
+                                          onPress: () {
+                                            Navigator.pop(context);
+                                          },
                                           width: 130.w,
                                           height: 50.h,
                                         ),

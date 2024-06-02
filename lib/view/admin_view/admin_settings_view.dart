@@ -113,7 +113,9 @@ class _AdminSettingsViewState extends State<AdminSettingsView> {
                                       Center(
                                         child: LoginSignUpButton(
                                           title: "No",
-                                          onPress: () {},
+                                          onPress: () {
+                                            Navigator.pop(context);
+                                          },
                                           width: 130.w,
                                           height: 50.h,
                                         ),

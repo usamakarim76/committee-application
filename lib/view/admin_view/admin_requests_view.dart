@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
@@ -29,6 +30,7 @@ class _AdminRequestViewState extends State<AdminRequestView> {
         create: (BuildContext context) => AdminRequestViewModel(context),
         child: Consumer<AdminRequestViewModel>(
           builder: (BuildContext context, model, Widget? child) => Scaffold(
+            appBar: const AppBarWidget(title: "User Requests"),
             backgroundColor: AppColors.kPrimaryColor,
             body: FutureBuilder(
                 future: model.getRequestsForUser(),
