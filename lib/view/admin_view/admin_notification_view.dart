@@ -26,7 +26,7 @@ class _AdminNotificationViewState extends State<AdminNotificationView> {
     return Scaffold(
       appBar: const AppBarWidget(title: "Notifications"),
       backgroundColor: AppColors.kPrimaryColor,
-      body: Container(
+      body: SizedBox(
         width: 1.sw,
         height: 1.sh,
         child: StreamBuilder(

@@ -30,8 +30,6 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
         sendNotificationToAdmin(userName, adminUid);
       }
     } catch (e) {
-      isLoading = false;
-      notifyListeners();
       sendNotificationToAdmin("Someone", adminUid);
     }
   }
@@ -47,8 +45,7 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
         print(requests.contains(auth.currentUser!.uid));
       }
       if (requests.contains(auth.currentUser!.uid)) {
-        isLoading = false;
-        notifyListeners();
+        Utils.removeLoading();
         Utils.errorMessage(context, "Request already send");
       } else {
         var data = await fireStore
@@ -56,6 +53,7 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
             .doc(adminUid)
             .get();
         if (data['DeviceToken'] == " ") {
+          Utils.removeLoading();
           sendDataToAdminNotification(adminUid, name);
           sendDataToAdminRequests(adminUid);
         } else {
@@ -81,10 +79,14 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
             final response =
                 await http.post(url, body: jsonEncode(body), headers: headers);
             if (response.statusCode == 200) {
+              Utils.removeLoading();
               sendDataToAdminNotification(adminUid, name);
               sendDataToAdminRequests(adminUid);
-            } else {}
+            } else {
+              Utils.removeLoading();
+            }
           } catch (e) {
+            Utils.removeLoading();
             if (kDebugMode) {
               print(e.toString());
             }

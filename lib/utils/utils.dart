@@ -1,4 +1,5 @@
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -33,9 +34,14 @@ class Utils {
     ));
   }
 
-  static void showLoading(){
+  static void showLoading() {
     EasyLoading.show(
-      status: "Loading..."
+      status: "loading...",
+      maskType: EasyLoadingMaskType.black,
     );
+  }
+
+  static void removeLoading() {
+    EasyLoading.dismiss(animation: true);
   }
 }

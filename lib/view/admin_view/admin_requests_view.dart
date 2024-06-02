@@ -26,7 +26,7 @@ class _AdminRequestViewState extends State<AdminRequestView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ChangeNotifierProvider(
-        create: (BuildContext context) => AdminRequestViewModel(),
+        create: (BuildContext context) => AdminRequestViewModel(context),
         child: Consumer<AdminRequestViewModel>(
           builder: (BuildContext context, model, Widget? child) => Scaffold(
             backgroundColor: AppColors.kPrimaryColor,
@@ -45,7 +45,12 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                       style: textTheme.titleMedium,
                     );
                   } else if (snapshot.data!.isEmpty) {
-                    return const NoDataAvailableWidget();
+                    return NoDataAvailableWidget(
+                      isButton: true,
+                      onTap: () {
+                        model.updateData();
+                      },
+                    );
                   } else {
                     return SingleChildScrollView(
                       child: Container(
