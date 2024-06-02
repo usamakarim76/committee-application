@@ -27,42 +27,46 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppBarWidget(title: "My Committees"),
-      backgroundColor: AppColors.kPrimaryColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, RouteNames.adminAddCommitteeScreen);
-        },
-        backgroundColor: AppColors.kSecondaryColor,
-        child: const Icon(
-          Icons.add,
-          color: AppColors.kPrimaryColor,
-        ),
-      ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection(AppConstants.adminCommittee)
-              .where('user_uid', isEqualTo: auth.currentUser!.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: LoadingWidget(
-                  color: AppColors.kSecondaryColor,
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else if (snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Text(
-                  "Create Committee",
-                  style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
-                ),
-              );
-            } else {
-              return Container(
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection(AppConstants.adminCommittee)
+            .where('user_uid', isEqualTo: auth.currentUser!.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: LoadingWidget(
+                color: AppColors.kSecondaryColor,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          } else if (snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text(
+                "Create Committee",
+                style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
+              ),
+            );
+          } else {
+            print(snapshot.data!.docs.length);
+            return Scaffold(
+              appBar: const AppBarWidget(title: "My Committees"),
+              backgroundColor: AppColors.kPrimaryColor,
+              floatingActionButton: snapshot.data!.docs.length == 1
+                  ? const SizedBox()
+                  : FloatingActionButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, RouteNames.adminAddCommitteeScreen);
+                      },
+                      backgroundColor: AppColors.kSecondaryColor,
+                      child: const Icon(
+                        Icons.add,
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
+              body: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                 height: 1.sh,
                 child: ListView.separated(
@@ -134,10 +138,10 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                     );
                   },
                 ),
-              );
-            }
-          }),
-    );
+              ),
+            );
+          }
+        });
   }
 
   int _calculateDifferenceInMonths(DateTime startDate, DateTime endDate) {

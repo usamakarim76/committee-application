@@ -17,7 +17,6 @@ class AdminRequestViewModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isLoading = false;
   Future<List<user.User>> getRequestsForUser() async {
-    print("object");
     List<user.User> requests = [];
     // Retrieve sent requests
     DocumentSnapshot sentSnapshot = await fireStore
@@ -62,64 +61,59 @@ class AdminRequestViewModel extends ChangeNotifier {
   }
 
   Future rejectRequestDataToNotification(user) async {
+    print(user);
     String? userName = await SharedPreferencesHelper.getUsername();
+    print(userName);
     var ref = fireStore.collection(AppConstants.notification).doc(user);
     ref.update({
       'notification': FieldValue.arrayUnion(
           ["$userName reject your Committee joining request"]),
     });
+    sendNotificationToUser(user);
   }
 
-  Future sendNotificationToUser(name, userId) async {
-    var checkUser = await fireStore
-        .collection(AppConstants.committeeRequests)
+  Future sendNotificationToUser(userId) async {
+    var data = await fireStore
+        .collection(AppConstants.userDataCollectionName)
         .doc(userId)
         .get();
-    if (checkUser.exists) {
-      var data = await fireStore
-          .collection(AppConstants.userDataCollectionName)
-          .doc(userId)
-          .get();
-      if (data['DeviceToken'] == " ") {
-        Utils.removeLoading();
-        // sendDataToAdminNotification(adminUid, name);
-        // sendDataToAdminRequests(adminUid);
-      } else {
-        var userName = await SharedPreferencesHelper.getUsername();
-        print(userName);
-        var deviceToken = data['DeviceToken'];
-        try {
-          var url = Uri.parse(AppConstants.fcmUrl);
-          var headers = {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'key=${AppConstants.apiKey}'
-          };
-          var body = {
-            'to': deviceToken,
-            'priority': 'high',
-            'notification': {
-              'title': "Committee joining request",
-              'body': "$userName reject your committee joining request",
-            },
-            'data': {
-              'type': 'request',
-              'user_id': auth.currentUser!.uid,
-            }
-          };
-          final response =
-              await http.post(url, body: jsonEncode(body), headers: headers);
-          if (response.statusCode == 200) {
-            Utils.removeLoading();
-            // sendDataToAdminNotification(adminUid, name);
-            // sendDataToAdminRequests(adminUid);
-          } else {
-            Utils.removeLoading();
+    if (data['DeviceToken'] == " ") {
+      Utils.removeLoading();
+      // sendDataToAdminNotification(adminUid, name);
+      // sendDataToAdminRequests(adminUid);
+    } else {
+      var userName = await SharedPreferencesHelper.getUsername();
+      print(userName);
+      var deviceToken = data['DeviceToken'];
+      try {
+        var url = Uri.parse(AppConstants.fcmUrl);
+        var headers = {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'key=${AppConstants.apiKey}'
+        };
+        var body = {
+          'to': deviceToken,
+          'priority': 'high',
+          'notification': {
+            'title': "Committee joining request",
+            'body': "$userName reject your committee joining request",
+          },
+          'data': {
+            'type': 'request',
+            'user_id': auth.currentUser!.uid,
           }
-        } catch (e) {
+        };
+        final response =
+            await http.post(url, body: jsonEncode(body), headers: headers);
+        if (response.statusCode == 200) {
           Utils.removeLoading();
-          if (kDebugMode) {
-            print(e.toString());
-          }
+        } else {
+          Utils.removeLoading();
+        }
+      } catch (e) {
+        Utils.removeLoading();
+        if (kDebugMode) {
+          print(e.toString());
         }
       }
     }
@@ -128,5 +122,88 @@ class AdminRequestViewModel extends ChangeNotifier {
   void updateData() {
     Utils.showLoading();
     notifyListeners();
+  }
+
+  Future acceptRequest(userUid) async {
+    isLoading = true;
+    notifyListeners();
+    print(userUid);
+    try {
+      var ref = fireStore
+          .collection(AppConstants.committeeRequests)
+          .doc(auth.currentUser!.uid);
+      await ref.update({
+        'requests': FieldValue.arrayRemove([userUid])
+      }).then((value) => {acceptRequestDataToNotification(userUid)});
+      isLoading = false;
+      notifyListeners();
+      await fireStore
+          .collection(AppConstants.adminCommittee)
+          .doc(auth.currentUser!.uid)
+          .update({
+        'members_list': FieldValue.arrayUnion([userUid])
+      });
+    } catch (e) {
+      print(e.toString());
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future acceptRequestDataToNotification(user) async {
+    print(user);
+    String? userName = await SharedPreferencesHelper.getUsername();
+    print(userName);
+    var ref = fireStore.collection(AppConstants.notification).doc(user);
+    ref.update({
+      'notification': FieldValue.arrayUnion(
+          ["$userName accept your Committee joining request"]),
+    });
+    sendAcceptNotificationToUser(user);
+  }
+
+  Future sendAcceptNotificationToUser(userId) async {
+    var data = await fireStore
+        .collection(AppConstants.userDataCollectionName)
+        .doc(userId)
+        .get();
+    if (data['DeviceToken'] == " ") {
+      Utils.removeLoading();
+    } else {
+      var userName = await SharedPreferencesHelper.getUsername();
+      print(userName);
+      var deviceToken = data['DeviceToken'];
+      try {
+        var url = Uri.parse(AppConstants.fcmUrl);
+        var headers = {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'key=${AppConstants.apiKey}'
+        };
+        var body = {
+          'to': deviceToken,
+          'priority': 'high',
+          'notification': {
+            'title': "Committee joining request",
+            'body': "$userName accept your committee joining request",
+          },
+          'data': {
+            'type': 'request',
+            'user_id': auth.currentUser!.uid,
+          }
+        };
+        final response =
+            await http.post(url, body: jsonEncode(body), headers: headers);
+        if (response.statusCode == 200) {
+          Utils.removeLoading();
+        } else {
+          Utils.removeLoading();
+        }
+      } catch (e) {
+        Utils.removeLoading();
+        if (kDebugMode) {
+          print(e.toString());
+        }
+      }
+    }
   }
 }
