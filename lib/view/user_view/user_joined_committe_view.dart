@@ -113,10 +113,9 @@ class _UserJoinedCommitteeViewState extends State<UserJoinedCommitteeView> {
                                   onPress: () async{
                                     print(
                                         snapshot.data!.docs[index]['user_uid']);
-                                    print(await SharedPreferencesHelper.getUserId());
-                                    // model.getCurrentUserData(snapshot
-                                    //     .data!.docs[index]['user_uid']
-                                    //     .toString());
+                                    model.getCurrentUserData(snapshot
+                                        .data!.docs[index]['user_uid']
+                                        .toString());
                                   },
                                   width: 120.w,
                                   height: 45.h,

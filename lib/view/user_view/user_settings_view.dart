@@ -77,7 +77,9 @@ class _UserSettingsViewState extends State<UserSettingsView> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    profileLisTile("Account", Icons.settings, () {}, 1.sw),
+                    profileLisTile("Account", Icons.settings, () {
+                      Navigator.pushNamed(context, RouteNames.adminAccountUpdateScreen);
+                    }, 1.sw),
                     profileLisTile("Terms and conditions", Icons.newspaper, () {
                       Navigator.pushNamed(
                           context, RouteNames.termsAndConditions);

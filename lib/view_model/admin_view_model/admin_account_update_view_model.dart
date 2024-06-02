@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/components/pop_over_widget.dart';
 import 'package:committee_app/resources/constants.dart';
+import 'package:committee_app/resources/shared_preferences/shared_preferences.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/utils/utils.dart';
@@ -68,6 +69,7 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
               });
       isLoading = false;
       notifyListeners();
+      await SharedPreferencesHelper.setUsername(adminNameController.text);
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
