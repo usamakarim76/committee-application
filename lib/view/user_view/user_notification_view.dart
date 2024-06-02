@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
+import 'package:committee_app/resources/components/loading_widget.dart';
+import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +39,12 @@ class _UserNotificationViewState extends State<UserNotificationView> {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               } else if (snapshot.data!.data()!.isEmpty) {
-                return Center(
-                  child: SizedBox(
-                    height: 300.h,
-                    width: 300.w,
-                    child: Lottie.asset(AppAssetsUrl.noDataAvailable),
-                  ),
+                return NoDataAvailableWidget(
+                  isButton: true,
+                  onTap: () {
+                    model.updateData();
+                  },
+                );
                 );
               } else {
                 return Padding(
