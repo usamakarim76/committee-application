@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
+import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/images_url.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,20 +36,15 @@ class _AdminNotificationViewState extends State<AdminNotificationView> {
                 .doc(auth.currentUser!.uid)
                 .snapshots(),
             builder: (context, snapshot) {
+              print(auth.currentUser!.uid);
               if (!snapshot.hasData) {
                 return const LoadingWidget(
                   color: AppColors.kSecondaryColor,
                 );
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
-              } else if (snapshot.data!.data()!.isEmpty) {
-                return Center(
-                  child: SizedBox(
-                    height: 300.h,
-                    width: 300.w,
-                    child: Lottie.asset(AppAssetsUrl.noDataAvailable),
-                  ),
-                );
+              } else if (snapshot.data!.data()!['notification'].isEmpty) {
+                return const NoDataAvailableWidget();
               } else {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -83,7 +79,7 @@ class _AdminNotificationViewState extends State<AdminNotificationView> {
                         ),
                       );
                     },
-                    itemCount: snapshot.data!.data()!.length,
+                    itemCount: snapshot.data!.data()!['notification'].length,
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox(
                         height: 20.h,
