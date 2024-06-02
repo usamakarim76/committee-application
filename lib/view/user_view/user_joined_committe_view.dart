@@ -4,6 +4,7 @@ import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
+import 'package:committee_app/resources/shared_preferences/shared_preferences.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/view_model/user_view_model/join_committee_view_model.dart';
 import 'package:flutter/material.dart';
@@ -109,12 +110,13 @@ class _UserJoinedCommitteeViewState extends State<UserJoinedCommitteeView> {
                                 ),
                                 LoginSignUpButton(
                                   title: "Join",
-                                  onPress: () {
+                                  onPress: () async{
                                     print(
                                         snapshot.data!.docs[index]['user_uid']);
-                                    model.getCurrentUserData(snapshot
-                                        .data!.docs[index]['user_uid']
-                                        .toString());
+                                    print(await SharedPreferencesHelper.getUserId());
+                                    // model.getCurrentUserData(snapshot
+                                    //     .data!.docs[index]['user_uid']
+                                    //     .toString());
                                   },
                                   width: 120.w,
                                   height: 45.h,

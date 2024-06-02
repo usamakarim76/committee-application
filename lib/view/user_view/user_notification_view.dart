@@ -39,13 +39,8 @@ class _UserNotificationViewState extends State<UserNotificationView> {
                 );
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
-              } else if (snapshot.data!.data()!.isEmpty) {
-                return NoDataAvailableWidget(
-                  isButton: true,
-                  onTap: () {
-                    setState(() {});
-                  },
-                );
+              } else if (snapshot.data!.data()!['notification'].isEmpty) {
+                return const NoDataAvailableWidget();
               } else {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -80,7 +75,7 @@ class _UserNotificationViewState extends State<UserNotificationView> {
                         ),
                       );
                     },
-                    itemCount: snapshot.data!.data()!.length,
+                    itemCount: snapshot.data!.data()!['notification'].length,
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox(
                         height: 20.h,
