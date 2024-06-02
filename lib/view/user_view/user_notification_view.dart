@@ -4,6 +4,7 @@ import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/constants.dart';
+import 'package:committee_app/resources/text_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,9 +43,8 @@ class _UserNotificationViewState extends State<UserNotificationView> {
                 return NoDataAvailableWidget(
                   isButton: true,
                   onTap: () {
-                    model.updateData();
+                    setState(() {});
                   },
-                );
                 );
               } else {
                 return Padding(
