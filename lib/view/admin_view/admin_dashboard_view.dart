@@ -30,7 +30,8 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(AppConstants.adminCommittee)
-            .where('user_uid', isEqualTo: auth.currentUser!.uid)
+            // .where('user_uid', isEqualTo: auth.currentUser!.uid)
+            .doc(auth.currentUser!.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -41,7 +42,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
-          } else if (snapshot.data!.docs.isEmpty) {
+          } else if (snapshot.data!.data()!.isEmpty) {
             return Center(
               child: Text(
                 "Create Committee",
@@ -52,7 +53,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
-              floatingActionButton: snapshot.data!.docs.length == 1
+              floatingActionButton: snapshot.data!.data()!.length == 1
                   ? const SizedBox()
                   : FloatingActionButton(
                       onPressed: () {
@@ -71,16 +72,16 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     DateTime startDate = DateFormat('dd/MM/yyyy').parse(
-                        snapshot.data!.docs[index]['committee_start_date']);
+                        snapshot.data!.data()!['committee_start_date']);
                     DateTime endDate = DateFormat('dd/MM/yyyy').parse(
-                        snapshot.data!.docs[index]['committee_end_date']);
+                        snapshot.data!.data()!['committee_end_date']);
                     // Calculate the difference in months
                     int differenceInMonths =
                         _calculateDifferenceInMonths(startDate, endDate);
 
                     return InkWell(
                       onTap: () {
-                        print(snapshot.data!.docs[index]);
+                        print(snapshot.data!.data());
                       },
                       child: Container(
                         height: 160.h,
@@ -107,12 +108,12 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  snapshot.data!.docs[index]['committee_name'],
+                                  snapshot.data!.data()!['committee_name'],
                                   style: textTheme.titleMedium!
                                       .copyWith(fontSize: 20.sp),
                                 ),
                                 Text(
-                                  "Members : ${snapshot.data!.docs[index]['members_list'].length}/${snapshot.data!.docs[index]['number_of_members']}",
+                                  "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
                                   style: textTheme.titleMedium,
                                 ),
                                 Text(
@@ -120,7 +121,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                   style: textTheme.titleMedium,
                                 ),
                                 Text(
-                                  "Total amount : ${snapshot.data!.docs[index]['total_amount']}",
+                                  "Total amount : ${snapshot.data!.data()!['total_amount']}",
                                   style: textTheme.titleMedium,
                                 ),
                               ],
@@ -130,7 +131,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                       ),
                     );
                   },
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: snapshot.data!.data()!.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(
                       height: 20.h,
