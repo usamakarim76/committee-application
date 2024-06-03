@@ -42,53 +42,66 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
     if (checkUser.exists) {
       List<dynamic> requests = checkUser.data()!['requests'];
       if (kDebugMode) {
-        print(requests.contains(auth.currentUser!.uid));
+        print("sfasdasdsds${requests.contains(auth.currentUser!.uid)}");
       }
       if (requests.contains(auth.currentUser!.uid)) {
         Utils.removeLoading();
         Utils.errorMessage(context, "Request already send");
       } else {
-        var data = await fireStore
-            .collection(AppConstants.userDataCollectionName)
+        var checkUserInCommittee = await fireStore
+            .collection(AppConstants.adminCommittee)
             .doc(adminUid)
             .get();
-        if (data['DeviceToken'] == " ") {
+        print(checkUserInCommittee['members_list']
+            .contains(auth.currentUser!.uid));
+        if (checkUserInCommittee['members_list']
+            .contains(auth.currentUser!.uid)) {
           Utils.removeLoading();
-          sendDataToAdminNotification(adminUid, name);
-          sendDataToAdminRequests(adminUid);
+          Utils.errorMessage(
+              context, "Current user already joined the committee");
         } else {
-          var deviceToken = data['DeviceToken'];
-          try {
-            var url = Uri.parse(AppConstants.fcmUrl);
-            var headers = {
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'key=${AppConstants.apiKey}'
-            };
-            var body = {
-              'to': deviceToken,
-              'priority': 'high',
-              'notification': {
-                'title': "Committee joining request",
-                'body': "$name want to join your committee",
-              },
-              'data': {
-                'type': 'request',
-                'user_id': auth.currentUser!.uid,
-              }
-            };
-            final response =
-                await http.post(url, body: jsonEncode(body), headers: headers);
-            if (response.statusCode == 200) {
-              Utils.removeLoading();
-              sendDataToAdminNotification(adminUid, name);
-              sendDataToAdminRequests(adminUid);
-            } else {
-              Utils.removeLoading();
-            }
-          } catch (e) {
+          var data = await fireStore
+              .collection(AppConstants.userDataCollectionName)
+              .doc(adminUid)
+              .get();
+          if (data['DeviceToken'] == " ") {
             Utils.removeLoading();
-            if (kDebugMode) {
-              print(e.toString());
+            sendDataToAdminNotification(adminUid, name);
+            sendDataToAdminRequests(adminUid);
+          } else {
+            var deviceToken = data['DeviceToken'];
+            try {
+              var url = Uri.parse(AppConstants.fcmUrl);
+              var headers = {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'key=${AppConstants.apiKey}'
+              };
+              var body = {
+                'to': deviceToken,
+                'priority': 'high',
+                'notification': {
+                  'title': "Committee joining request",
+                  'body': "$name want to join your committee",
+                },
+                'data': {
+                  'type': 'request',
+                  'user_id': auth.currentUser!.uid,
+                }
+              };
+              final response = await http.post(url,
+                  body: jsonEncode(body), headers: headers);
+              if (response.statusCode == 200) {
+                Utils.removeLoading();
+                sendDataToAdminNotification(adminUid, name);
+                sendDataToAdminRequests(adminUid);
+              } else {
+                Utils.removeLoading();
+              }
+            } catch (e) {
+              Utils.removeLoading();
+              if (kDebugMode) {
+                print(e.toString());
+              }
             }
           }
         }

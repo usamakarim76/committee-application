@@ -67,58 +67,78 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
-              body: Container(
+              body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                height: 1.sh,
-                child: InkWell(
-                  onTap: () {
-                    print(snapshot.data!.data());
-                  },
-                  child: Container(
-                    height: 160.h,
-                    width: 1.sw,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.kWhiteColor,
-                      borderRadius: BorderRadius.circular(10.r),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 3,
-                          spreadRadius: 0,
-                          offset: const Offset(4, 1),
-                          color: AppColors.kBlackColor.withOpacity(0.3),
-                        )
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              snapshot.data!.data()!['committee_name'],
-                              style: textTheme.titleMedium!
-                                  .copyWith(fontSize: 20.sp),
-                            ),
-                            Text(
-                              "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
-                              style: textTheme.titleMedium,
-                            ),
-                            Text(
-                              "Duration : $differenceInMonths months",
-                              style: textTheme.titleMedium,
-                            ),
-                            Text(
-                              "Total amount : ${snapshot.data!.data()!['total_amount']}",
-                              style: textTheme.titleMedium,
-                            ),
-                          ],
+                child: Container(
+                  height: 1.sh,
+                  width: 1.sw,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhiteColor,
+                    borderRadius: BorderRadius.circular(10.r),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 3,
+                        spreadRadius: 0,
+                        offset: const Offset(4, 1),
+                        color: AppColors.kBlackColor.withOpacity(0.3),
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        snapshot.data!.data()!['committee_name'],
+                        style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
+                      ),
+                      Text(
+                        "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
+                        style: textTheme.titleMedium,
+                      ),
+                      Text(
+                        "Duration : $differenceInMonths months",
+                        style: textTheme.titleMedium,
+                      ),
+                      Text(
+                        "Total amount : ${snapshot.data!.data()!['total_amount']}",
+                        style: textTheme.titleMedium,
+                      ),
+                      Text(
+                        "Committee Members",
+                        style: textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        height: 200.h,
+                        width: 1.sw,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Text(
+                                snapshot.data!.data()!['members_list'][index]);
+                          },
+                          itemCount:
+                              snapshot.data!.data()!['members_list'].length,
                         ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        "Payment received by committee members",
+                        style: textTheme.titleMedium,
+                      ),
+                      SizedBox(
+                        height: 200.h,
+                        width: 1.sw,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Text(
+                                snapshot.data!.data()!['members_list'][index]);
+                          },
+                          itemCount:
+                              snapshot.data!.data()!['members_list'].length,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

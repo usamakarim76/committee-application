@@ -41,8 +41,7 @@ class AdminRequestViewModel extends ChangeNotifier {
   }
 
   Future rejectRequest(userUid) async {
-    isLoading = true;
-    notifyListeners();
+    Utils.showLoading();
     print(userUid);
     try {
       var ref = fireStore
@@ -51,12 +50,11 @@ class AdminRequestViewModel extends ChangeNotifier {
       await ref.update({
         'requests': FieldValue.arrayRemove([userUid])
       }).then((value) => {rejectRequestDataToNotification(userUid)});
-      isLoading = false;
+      Utils.removeLoading();
       notifyListeners();
     } catch (e) {
       print(e.toString());
-      isLoading = false;
-      notifyListeners();
+      Utils.removeLoading();
     }
   }
 
@@ -125,8 +123,7 @@ class AdminRequestViewModel extends ChangeNotifier {
   }
 
   Future acceptRequest(userUid) async {
-    isLoading = true;
-    notifyListeners();
+    Utils.showLoading();
     print(userUid);
     try {
       var ref = fireStore
@@ -135,18 +132,18 @@ class AdminRequestViewModel extends ChangeNotifier {
       await ref.update({
         'requests': FieldValue.arrayRemove([userUid])
       }).then((value) => {acceptRequestDataToNotification(userUid)});
-      isLoading = false;
-      notifyListeners();
       await fireStore
           .collection(AppConstants.adminCommittee)
           .doc(auth.currentUser!.uid)
           .update({
         'members_list': FieldValue.arrayUnion([userUid])
       });
-    } catch (e) {
-      print(e.toString());
-      isLoading = false;
+      Utils.removeLoading();
       notifyListeners();
+    } catch (e) {
+      Utils.removeLoading();
+
+      print(e.toString());
     }
   }
 

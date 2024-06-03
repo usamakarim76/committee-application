@@ -94,7 +94,9 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                                     children: [
                                       LoginSignUpButton(
                                         title: "Accept",
-                                        onPress: () {},
+                                        onPress: () {
+                                          model.acceptRequest(snapshot.data![index].userUid);
+                                        },
                                         height: 45.h,
                                         width: 0.3.sw,
                                         buttonColor: Color(0xff58B14C),
