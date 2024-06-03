@@ -29,7 +29,8 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
     int count = querySnapshot.docs.length;
     await fireStore
         .collection(AppConstants.adminCommittee)
-        .doc(committeeNameController.text)
+        // .doc(committeeNameController.text)
+        .doc(auth.currentUser!.uid)
         .set({
           "id": count + 1,
           "user_uid": auth.currentUser!.uid,
@@ -56,22 +57,22 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
             });
   }
 
-  Future<void> checkDuplicateName() async {
-    final String name = committeeNameController.text.trim();
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection(AppConstants.adminCommittee)
-        .where('committee_name', isEqualTo: name)
-        .get();
-    nameExists = querySnapshot.docs.isNotEmpty;
-    isLoading = false;
-    notifyListeners();
-    if (nameExists) {
-      Utils.errorMessage(
-          context, 'Committee name already exists, use unique name');
-    } else {
-      committeeDataToFireStore();
-    }
-  }
+  // Future<void> checkDuplicateName() async {
+  //   final String name = committeeNameController.text.trim();
+  //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //       .collection(AppConstants.adminCommittee)
+  //       .where('committee_name', isEqualTo: name)
+  //       .get();
+  //   nameExists = querySnapshot.docs.isNotEmpty;
+  //   isLoading = false;
+  //   notifyListeners();
+  //   if (nameExists) {
+  //     Utils.errorMessage(
+  //         context, 'Committee name already exists, use unique name');
+  //   } else {
+  //     committeeDataToFireStore();
+  //   }
+  // }
 
   Future<void> selectStartDate() async {
     final DateTime? picked = await showDatePicker(

@@ -49,7 +49,6 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
               ),
             );
           } else {
-            print(snapshot.data!.docs.length);
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
