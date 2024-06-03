@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
+import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
@@ -42,101 +43,83 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
-          } else if (snapshot.data!.data()!.isEmpty) {
+          } else if (!snapshot.data!.exists) {
             return Center(
-              child: Text(
-                "Create Committee",
-                style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
+              child: NoDataAvailableWidget(
+                isButton: true,
+                onTap: () {
+                  Navigator.pushNamed(
+                      context, RouteNames.adminAddCommitteeScreen);
+                },
+                title: "Create Committee",
+                height: 50.h,
+                width: 200.w,
               ),
             );
           } else {
+            DateTime startDate = DateFormat('dd/MM/yyyy')
+                .parse(snapshot.data!.data()!['committee_start_date']);
+            DateTime endDate = DateFormat('dd/MM/yyyy')
+                .parse(snapshot.data!.data()!['committee_end_date']);
+            // Calculate the difference in months
+            int differenceInMonths =
+                _calculateDifferenceInMonths(startDate, endDate);
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
-              floatingActionButton: snapshot.data!.data()!.length == 1
-                  ? const SizedBox()
-                  : FloatingActionButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RouteNames.adminAddCommitteeScreen);
-                      },
-                      backgroundColor: AppColors.kSecondaryColor,
-                      child: const Icon(
-                        Icons.add,
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
               body: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                 height: 1.sh,
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    DateTime startDate = DateFormat('dd/MM/yyyy').parse(
-                        snapshot.data!.data()!['committee_start_date']);
-                    DateTime endDate = DateFormat('dd/MM/yyyy').parse(
-                        snapshot.data!.data()!['committee_end_date']);
-                    // Calculate the difference in months
-                    int differenceInMonths =
-                        _calculateDifferenceInMonths(startDate, endDate);
-
-                    return InkWell(
-                      onTap: () {
-                        print(snapshot.data!.data());
-                      },
-                      child: Container(
-                        height: 160.h,
-                        width: 1.sw,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 20.h),
-                        decoration: BoxDecoration(
-                          color: AppColors.kWhiteColor,
-                          borderRadius: BorderRadius.circular(10.r),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 3,
-                              spreadRadius: 0,
-                              offset: const Offset(4, 1),
-                              color: AppColors.kBlackColor.withOpacity(0.3),
-                            )
-                          ],
-                        ),
-                        child: Row(
+                child: InkWell(
+                  onTap: () {
+                    print(snapshot.data!.data());
+                  },
+                  child: Container(
+                    height: 160.h,
+                    width: 1.sw,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhiteColor,
+                      borderRadius: BorderRadius.circular(10.r),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 3,
+                          spreadRadius: 0,
+                          offset: const Offset(4, 1),
+                          color: AppColors.kBlackColor.withOpacity(0.3),
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data!.data()!['committee_name'],
-                                  style: textTheme.titleMedium!
-                                      .copyWith(fontSize: 20.sp),
-                                ),
-                                Text(
-                                  "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
-                                  style: textTheme.titleMedium,
-                                ),
-                                Text(
-                                  "Duration : $differenceInMonths months",
-                                  style: textTheme.titleMedium,
-                                ),
-                                Text(
-                                  "Total amount : ${snapshot.data!.data()!['total_amount']}",
-                                  style: textTheme.titleMedium,
-                                ),
-                              ],
+                            Text(
+                              snapshot.data!.data()!['committee_name'],
+                              style: textTheme.titleMedium!
+                                  .copyWith(fontSize: 20.sp),
+                            ),
+                            Text(
+                              "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
+                              style: textTheme.titleMedium,
+                            ),
+                            Text(
+                              "Duration : $differenceInMonths months",
+                              style: textTheme.titleMedium,
+                            ),
+                            Text(
+                              "Total amount : ${snapshot.data!.data()!['total_amount']}",
+                              style: textTheme.titleMedium,
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: snapshot.data!.data()!.length,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 20.h,
-                    );
-                  },
+                      ],
+                    ),
+                  ),
                 ),
               ),
             );

@@ -8,7 +8,15 @@ import 'package:lottie/lottie.dart';
 class NoDataAvailableWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isButton;
-  const NoDataAvailableWidget({super.key, this.onTap, this.isButton= false});
+  final String title;
+  final double height, width;
+  const NoDataAvailableWidget(
+      {super.key,
+      this.onTap,
+      this.isButton = false,
+      this.title = "Reload",
+      this.height = 50,
+      this.width = 150});
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +31,31 @@ class NoDataAvailableWidget extends StatelessWidget {
               AppAssetsUrl.noDataAvailable,
             ),
           ),
-          isButton ? InkWell(
-            overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-            onTap: onTap,
-            child: Container(
-              width: 150.w,
-              height: 50.h,
-              decoration: BoxDecoration(
-                color: AppColors.kSecondaryColor,
-                borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(
-                  color: AppColors.kSecondaryColor.withOpacity(0.5),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  "Reload",
-                  style: textTheme.bodyLarge!
-                      .copyWith(color: AppColors.kWhiteColor),
-                ),
-              ),
-            ),
-          ): const SizedBox(),
+          isButton
+              ? InkWell(
+                  overlayColor:
+                      const MaterialStatePropertyAll(Colors.transparent),
+                  onTap: onTap,
+                  child: Container(
+                    width: width,
+                    height: height,
+                    decoration: BoxDecoration(
+                      color: AppColors.kSecondaryColor,
+                      borderRadius: BorderRadius.circular(10.r),
+                      border: Border.all(
+                        color: AppColors.kSecondaryColor.withOpacity(0.5),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        title,
+                        style: textTheme.bodyLarge!
+                            .copyWith(color: AppColors.kWhiteColor),
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );
