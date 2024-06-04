@@ -2,6 +2,7 @@ import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/view/admin_view/admin_account_update.dart';
 import 'package:committee_app/view/admin_view/admin_add_committee_view.dart';
 import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
+import 'package:committee_app/view/admin_view/admin_member_details_view.dart';
 import 'package:committee_app/view/admin_view/admin_signup_view.dart';
 import 'package:committee_app/view/admin_view/admin_bottom_navigation_bar.dart';
 import 'package:committee_app/view/forgot_password_view.dart';
@@ -39,7 +40,8 @@ class Routes {
             builder: (BuildContext context) => const UserDashBoardView());
       case RouteNames.adminBottomNavBar:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const AdminBottomNavigationBar());
+            builder: (BuildContext context) =>
+                const AdminBottomNavigationBar());
       case RouteNames.userBottomNavBar:
         return MaterialPageRoute(
             builder: (BuildContext context) => const UserBottomNavigationBar());
@@ -52,6 +54,9 @@ class Routes {
       case RouteNames.termsAndConditions:
         return MaterialPageRoute(
             builder: (BuildContext context) => const TermsAndConditionsView());
+      case RouteNames.adminMemberDetailsView:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const AdminMemberDetailsView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

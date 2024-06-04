@@ -168,7 +168,9 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                         userData['PhoneNumber'],
                                         style: textTheme.titleMedium,
                                       ),
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator
+                                      },
                                     ),
                                   );
                                 }
