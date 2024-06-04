@@ -63,6 +63,7 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
                 isLoading = false,
                 notifyListeners(),
                 Utils.successMessage(context, "Account updated successfully"),
+                Navigator.pop(context),
               })
           .onError((error, stackTrace) => {
                 Utils.errorMessage(context, error),
@@ -86,7 +87,7 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
       'Name': userName ?? "",
       'PhoneNumber': phoneNumber ?? "",
       'Address': userAddress ?? "",
-      'ProfileImage': image ?? "",
+      'ProfileImage': image,
       'UpdatedAt': DateTime.now().toString()
     });
   }

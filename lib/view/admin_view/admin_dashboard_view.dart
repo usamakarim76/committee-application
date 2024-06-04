@@ -10,7 +10,9 @@ import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
@@ -111,7 +113,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                         style: textTheme.titleMedium,
                       ),
                       SizedBox(
-                        height: 200.h,
+                        height: 210.h,
                         width: 1.sw,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
@@ -133,40 +135,42 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                   return Text(userSnapshot.error.toString());
                                 } else {
                                   var userData = userSnapshot.data!.data();
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            userData!['Name'],
-                                            style: textTheme.titleMedium,
-                                          ),
-                                          Text(
-                                            userData['Email'],
-                                            style: textTheme.titleMedium,
-                                          ),
-                                        ],
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: AppColors.kBlackColor
+                                              .withOpacity(0.5),
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(10.r)),
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage:
+                                            userData!['ProfileImage'] == ""
+                                                ? null
+                                                : NetworkImage(
+                                                    userData['ProfileImage'],
+                                                  ),
+                                        radius: 30.r,
+                                        child: userData['ProfileImage'] == ""
+                                            ? Text(
+                                                "No image",
+                                                style: textTheme.titleMedium!
+                                                    .copyWith(fontSize: 10.sp),
+                                              )
+                                            : null,
                                       ),
-                                      LoginSignUpButton(
-                                          title: "Paid",
-                                          onPress: () {},
-                                          height: 50.h,
-                                          width: 100.w),
-                                    ],
+                                      title: Text(
+                                        userData['Name'],
+                                        style: textTheme.titleMedium,
+                                      ),
+                                      subtitle: Text(
+                                        userData['PhoneNumber'],
+                                        style: textTheme.titleMedium,
+                                      ),
+                                      onTap: () {},
+                                    ),
                                   );
-                                  // ListTile(
-                                  // title: Text(userData!['Name']),
-                                  // subtitle: Text(userData['Email']),
-                                  // trailing: LoginSignUpButton(
-                                  //   title: "title",
-                                  //   onPress: () {},
-                                  //   width: 50.w,
-                                  // ),
-                                  // );
                                 }
                               },
                             );
@@ -180,7 +184,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                         style: textTheme.titleMedium,
                       ),
                       SizedBox(
-                        height: 200.h,
+                        height: 210.h,
                         width: 1.sw,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
