@@ -115,8 +115,61 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                         width: 1.sw,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
-                            return Text(
-                                snapshot.data!.data()!['members_list'][index]);
+                            String memberUid =
+                                snapshot.data!.data()!['members_list'][index];
+                            return FutureBuilder(
+                              future: fireStore
+                                  .collection(
+                                      AppConstants.userDataCollectionName)
+                                  .doc(memberUid)
+                                  .get(),
+                              builder: (context, userSnapshot) {
+                                if (!userSnapshot.hasData) {
+                                  return const Center(
+                                    child: LoadingWidget(
+                                        color: AppColors.kSecondaryColor),
+                                  );
+                                } else if (userSnapshot.hasError) {
+                                  return Text(userSnapshot.error.toString());
+                                } else {
+                                  var userData = userSnapshot.data!.data();
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            userData!['Name'],
+                                            style: textTheme.titleMedium,
+                                          ),
+                                          Text(
+                                            userData['Email'],
+                                            style: textTheme.titleMedium,
+                                          ),
+                                        ],
+                                      ),
+                                      LoginSignUpButton(
+                                          title: "Paid",
+                                          onPress: () {},
+                                          height: 50.h,
+                                          width: 100.w),
+                                    ],
+                                  );
+                                  // ListTile(
+                                  // title: Text(userData!['Name']),
+                                  // subtitle: Text(userData['Email']),
+                                  // trailing: LoginSignUpButton(
+                                  //   title: "title",
+                                  //   onPress: () {},
+                                  //   width: 50.w,
+                                  // ),
+                                  // );
+                                }
+                              },
+                            );
                           },
                           itemCount:
                               snapshot.data!.data()!['members_list'].length,
