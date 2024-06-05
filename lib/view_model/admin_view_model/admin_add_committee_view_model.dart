@@ -21,14 +21,15 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   List members = [];
-  bool isLoading = false, nameExists = false;
+  bool isLoading = false, nameExists = false,amountCheck = false;
+  int amount = 0;
 
-  int totalAmount() {
+  void totalAmount() {
     var member = int.parse(committeeMemberController.text);
     var amountPerMonth = int.parse(committeeAmountPerMonthController.text);
-    int amount = member * amountPerMonth;
+    amount = member * amountPerMonth;
     print(amount);
-    return 10;
+    notifyListeners();
   }
 
   Future committeeDataToFireStore() async {
@@ -84,6 +85,19 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   //     committeeDataToFireStore();
   //   }
   // }
+
+  void checkAmoutValue(value){
+    if(value){
+      amountCheck = false;
+      // notifyListeners();
+    }
+    else{
+      amountCheck = true;
+      // notifyListeners();
+    }
+    print(amountCheck);
+    notifyListeners();
+  }
 
   Future<void> selectStartDate() async {
     final DateTime? picked = await showDatePicker(

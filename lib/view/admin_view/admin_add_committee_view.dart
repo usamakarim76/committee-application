@@ -98,27 +98,46 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     onChanged: (val) {
                       print(val);
                       model.totalAmount();
+                      model.checkAmoutValue(val.isEmpty);
                     },
                   ),
                   SizedBox(
                     height: 20.h,
                   ),
-                  TextFieldWidget(
+                  Container(
+                    height: 60.h,
                     width: width,
-                    node: model.committeeAmountNode,
-                    title: "Total Amount",
-                    controller: model.committeeAmountController,
-                    textInputType: TextInputType.phone,
-                    function: () {},
-                    onTapFunction: () {},
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhiteColor,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 25.w),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        model.amountCheck
+                            ? model.amount.toString()
+                            : "Total Amount",
+                        style: textTheme.titleSmall!
+                            .copyWith(fontWeight: FontWeight.w100),
+                      ),
+                    ),
                   ),
+                  // TextFieldWidget(
+                  //   width: width,
+                  //   node: model.committeeAmountNode,
+                  //   title: "Total Amount",
+                  //   controller: model.committeeAmountController,
+                  //   textInputType: TextInputType.phone,
+                  //   function: () {},
+                  //   onTapFunction: () {},
+                  // ),
                   SizedBox(
                     height: 20.h,
                   ),
                   InkWell(
                     onTap: () {
-                      // model.selectStartDate();
-                      model.totalAmount();
+                      model.selectStartDate();
                     },
                     child: Container(
                       height: 60.h,
