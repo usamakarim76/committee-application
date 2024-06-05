@@ -14,7 +14,7 @@ class TextFieldWidget extends StatelessWidget {
       required this.textInputType,
       this.obscureText = false,
       required this.onTapFunction,
-      this.icon});
+      this.icon, this.onChanged});
 
   final double width;
   final TextEditingController controller;
@@ -25,6 +25,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final VoidCallback onTapFunction;
   final IconData? icon;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class TextFieldWidget extends StatelessWidget {
         style: textTheme.titleSmall,
         obscureText: obscureText,
         cursorColor: AppColors.kPrimaryColor,
+        onChanged: onChanged,
         decoration: InputDecoration(
             hintText: title,
             alignLabelWithHint: true,

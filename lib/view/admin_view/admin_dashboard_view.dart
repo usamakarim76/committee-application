@@ -169,7 +169,8 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                         style: textTheme.titleMedium,
                                       ),
                                       onTap: () {
-                                        Navigator
+                                        Navigator.pushNamed(context,
+                                            RouteNames.adminMemberDetailsView);
                                       },
                                     ),
                                   );

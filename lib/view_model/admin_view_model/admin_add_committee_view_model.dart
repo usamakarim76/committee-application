@@ -11,14 +11,25 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   TextEditingController committeeNameController = TextEditingController();
   TextEditingController committeeAmountController = TextEditingController();
   TextEditingController committeeMemberController = TextEditingController();
+  TextEditingController committeeAmountPerMonthController =
+      TextEditingController();
   FocusNode committeeNameNode = FocusNode();
   FocusNode committeeAmountNode = FocusNode();
   FocusNode committeeMemberNode = FocusNode();
+  FocusNode committeeAmountPerMonthNode = FocusNode();
   DateTime? startDate, endDate;
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   List members = [];
   bool isLoading = false, nameExists = false;
+
+  int totalAmount() {
+    var member = int.parse(committeeMemberController.text);
+    var amountPerMonth = int.parse(committeeAmountPerMonthController.text);
+    int amount = member * amountPerMonth;
+    print(amount);
+    return 10;
+  }
 
   Future committeeDataToFireStore() async {
     isLoading = true;

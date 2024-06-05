@@ -75,9 +75,30 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     textInputType: TextInputType.phone,
                     function: () {
                       Utils.focusNodeChange(context, model.committeeMemberNode,
+                          model.committeeAmountPerMonthNode);
+                    },
+                    onTapFunction: () {},
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  TextFieldWidget(
+                    width: width,
+                    node: model.committeeAmountPerMonthNode,
+                    title: "Amount per month",
+                    controller: model.committeeAmountPerMonthController,
+                    textInputType: TextInputType.phone,
+                    function: () {
+                      Utils.focusNodeChange(
+                          context,
+                          model.committeeAmountPerMonthNode,
                           model.committeeAmountNode);
                     },
                     onTapFunction: () {},
+                    onChanged: (val) {
+                      print(val);
+                      model.totalAmount();
+                    },
                   ),
                   SizedBox(
                     height: 20.h,
@@ -96,7 +117,8 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                   ),
                   InkWell(
                     onTap: () {
-                      model.selectStartDate();
+                      // model.selectStartDate();
+                      model.totalAmount();
                     },
                     child: Container(
                       height: 60.h,
