@@ -130,7 +130,7 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                   //   controller: model.committeeAmountController,
                   //   textInputType: TextInputType.phone,
                   //   function: () {},
-                  //   onTapFunction: () {},
+                  //   onTapFunction: () {}
                   // ),
                   SizedBox(
                     height: 20.h,
