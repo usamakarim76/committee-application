@@ -62,7 +62,7 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                         child: ListView.separated(
                           itemBuilder: (context, index) {
                             return Container(
-                              height: 130.h,
+                              height: 150.h,
                               width: 1.sw,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.w, vertical: 20.h),
@@ -95,11 +95,12 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                                       LoginSignUpButton(
                                         title: "Accept",
                                         onPress: () {
-                                          model.acceptRequest(snapshot.data![index].userUid);
+                                          model.acceptRequest(
+                                              snapshot.data![index].userUid);
                                         },
                                         height: 45.h,
                                         width: 0.3.sw,
-                                        buttonColor: Color(0xff58B14C),
+                                        buttonColor: const Color(0xff58B14C),
                                       ),
                                       LoginSignUpButton(
                                         title: "Reject",
@@ -110,7 +111,7 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                                         },
                                         height: 45.h,
                                         width: 0.3.sw,
-                                        buttonColor: Color(0xffE04142),
+                                        buttonColor: const Color(0xffE04142),
                                         loading: model.isLoading,
                                       ),
                                     ],

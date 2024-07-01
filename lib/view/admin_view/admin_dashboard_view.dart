@@ -124,8 +124,9 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                             )
                           : SizedBox(
                               height: 210.h,
-                              width: 1.sw,
+                              width: 400.w,
                               child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   String memberUid = snapshot.data!
                                       .data()!['members_list'][index];
@@ -147,70 +148,68 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                       } else {
                                         var userData =
                                             userSnapshot.data!.data();
-                                        print("Useer data $userData");
-                                        return userData!.length == 0
-                                            ? Center(
-                                                child: Text(
-                                                  "Members are not added yet",
-                                                  style: textTheme.titleMedium!
-                                                      .copyWith(
-                                                          fontSize: 15.sp,
-                                                          color: AppColors
-                                                              .kBlackColor),
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context,
+                                                RouteNames
+                                                    .adminMemberDetailsView);
+                                          },
+                                          child: Container(
+                                            width: 0.3.sw,
+                                            height: 50.h,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: AppColors.kBlackColor
+                                                    .withOpacity(0.5),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: userData![
+                                                              'ProfileImage'] ==
+                                                          ""
+                                                      ? null
+                                                      : NetworkImage(
+                                                          userData[
+                                                              'ProfileImage'],
+                                                        ),
+                                                  radius: 50.r,
+                                                  child: userData[
+                                                              'ProfileImage'] ==
+                                                          ""
+                                                      ? Text(
+                                                          "No image",
+                                                          style: textTheme
+                                                              .titleMedium!
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      10.sp),
+                                                        )
+                                                      : null,
                                                 ),
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: AppColors
-                                                          .kBlackColor
-                                                          .withOpacity(0.5),
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.r)),
-                                                child: ListTile(
-                                                  leading: CircleAvatar(
-                                                    backgroundImage: userData[
-                                                                'ProfileImage'] ==
-                                                            ""
-                                                        ? null
-                                                        : NetworkImage(
-                                                            userData[
-                                                                'ProfileImage'],
-                                                          ),
-                                                    radius: 30.r,
-                                                    child: userData[
-                                                                'ProfileImage'] ==
-                                                            ""
-                                                        ? Text(
-                                                            "No image",
-                                                            style: textTheme
-                                                                .titleMedium!
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        10.sp),
-                                                          )
-                                                        : null,
-                                                  ),
-                                                  title: Text(
-                                                    userData['Name'],
-                                                    style:
-                                                        textTheme.titleMedium,
-                                                  ),
-                                                  subtitle: Text(
-                                                    userData['PhoneNumber'],
-                                                    style:
-                                                        textTheme.titleMedium,
-                                                  ),
-                                                  onTap: () {
-                                                    Navigator.pushNamed(
-                                                        context,
-                                                        RouteNames
-                                                            .adminMemberDetailsView);
-                                                  },
+                                                Text(
+                                                  userData['Name'],
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: textTheme.titleSmall,
                                                 ),
-                                              );
+                                                Text(
+                                                  userData['PhoneNumber'],
+                                                  style: textTheme.titleSmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
                                       }
                                     },
                                   );
@@ -250,11 +249,99 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                   width: 1.sw,
                                   child: ListView.builder(
                                     itemBuilder: (context, index) {
-                                      return Text(snapshot.data!
-                                          .data()!['members_list'][index]);
+                                      String memberUid = snapshot.data!.data()![
+                                          'committee_paid_by_members'][index];
+                                      return FutureBuilder(
+                                        future: fireStore
+                                            .collection(AppConstants
+                                                .userDataCollectionName)
+                                            .doc(memberUid)
+                                            .get(),
+                                        builder: (context, userSnapshot) {
+                                          if (!userSnapshot.hasData) {
+                                            return const Center(
+                                              child: LoadingWidget(
+                                                  color: AppColors
+                                                      .kSecondaryColor),
+                                            );
+                                          } else if (userSnapshot.hasError) {
+                                            return Text(
+                                                userSnapshot.error.toString());
+                                          } else {
+                                            var userData =
+                                                userSnapshot.data!.data();
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                    context,
+                                                    RouteNames
+                                                        .adminMemberDetailsView);
+                                              },
+                                              child: Container(
+                                                width: 0.3.sw,
+                                                height: 50.h,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: AppColors.kBlackColor
+                                                        .withOpacity(0.5),
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage: userData![
+                                                                  'ProfileImage'] ==
+                                                              ""
+                                                          ? null
+                                                          : NetworkImage(
+                                                              userData[
+                                                                  'ProfileImage'],
+                                                            ),
+                                                      radius: 50.r,
+                                                      child: userData[
+                                                                  'ProfileImage'] ==
+                                                              ""
+                                                          ? Text(
+                                                              "No image",
+                                                              style: textTheme
+                                                                  .titleMedium!
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          10.sp),
+                                                            )
+                                                          : null,
+                                                    ),
+                                                    Text(
+                                                      userData['Name'],
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style:
+                                                          textTheme.titleSmall,
+                                                    ),
+                                                    Text(
+                                                      userData['PhoneNumber'],
+                                                      style:
+                                                          textTheme.titleSmall,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      );
                                     },
                                     itemCount: snapshot.data!
-                                        .data()!['members_list']
+                                        .data()!['committee_paid_by_members']
                                         .length,
                                   ),
                                 ),
