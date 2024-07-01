@@ -98,7 +98,7 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     onChanged: (val) {
                       print(val);
                       model.totalAmount();
-                      model.checkAmoutValue(val.isEmpty);
+                      model.checkAmountValue(val.isEmpty);
                     },
                   ),
                   SizedBox(

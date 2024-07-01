@@ -86,7 +86,7 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   //   }
   // }
 
-  void checkAmoutValue(value){
+  void checkAmountValue(value){
     if(value){
       amountCheck = false;
       // notifyListeners();
