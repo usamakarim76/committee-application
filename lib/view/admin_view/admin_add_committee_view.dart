@@ -192,7 +192,7 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     onPress: () {
                       if (model.committeeNameController.text.isEmpty ||
                           model.committeeMemberController.text.isEmpty ||
-                          model.committeeAmountController.text.isEmpty ||
+                          // model.committeeAmountController.text.isEmpty ||
                           model.startDate == null ||
                           model.endDate == null) {
                         Utils.errorMessage(context, "All fields are required");

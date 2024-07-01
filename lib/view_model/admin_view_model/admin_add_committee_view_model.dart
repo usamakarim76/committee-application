@@ -47,13 +47,14 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
           "user_uid": auth.currentUser!.uid,
           "committee_name": committeeNameController.text.toString(),
           "number_of_members": committeeMemberController.text,
-          "total_amount": committeeAmountController.text,
+          "total_amount": amount.toString(),
           "committee_start_date":
               "${startDate!.day}/${startDate!.month}/${startDate!.year}",
           "committee_end_date":
               "${endDate!.day}/${endDate!.month}/${endDate!.year}",
           "created_at": DateTime.now(),
-          "members_list": members
+          "members_list": members,
+          "committee_paid_by_members": members
         })
         .then((value) => {
               Utils.successMessage(context, "Committee created successfully"),

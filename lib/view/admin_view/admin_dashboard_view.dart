@@ -66,6 +66,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             // Calculate the difference in months
             int differenceInMonths =
                 _calculateDifferenceInMonths(startDate, endDate);
+            print(snapshot.data!.data()!['members_list'].length);
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
@@ -112,92 +113,151 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                         "Committee Members",
                         style: textTheme.titleMedium,
                       ),
-                      SizedBox(
-                        height: 210.h,
-                        width: 1.sw,
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            String memberUid =
-                                snapshot.data!.data()!['members_list'][index];
-                            return FutureBuilder(
-                              future: fireStore
-                                  .collection(
-                                      AppConstants.userDataCollectionName)
-                                  .doc(memberUid)
-                                  .get(),
-                              builder: (context, userSnapshot) {
-                                if (!userSnapshot.hasData) {
-                                  return const Center(
-                                    child: LoadingWidget(
-                                        color: AppColors.kSecondaryColor),
-                                  );
-                                } else if (userSnapshot.hasError) {
-                                  return Text(userSnapshot.error.toString());
-                                } else {
-                                  var userData = userSnapshot.data!.data();
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: AppColors.kBlackColor
-                                              .withOpacity(0.5),
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(10.r)),
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundImage:
-                                            userData!['ProfileImage'] == ""
-                                                ? null
-                                                : NetworkImage(
-                                                    userData['ProfileImage'],
-                                                  ),
-                                        radius: 30.r,
-                                        child: userData['ProfileImage'] == ""
-                                            ? Text(
-                                                "No image",
-                                                style: textTheme.titleMedium!
-                                                    .copyWith(fontSize: 10.sp),
+                      snapshot.data!.data()!['members_list'].length == 0
+                          ? Center(
+                              child: Text(
+                                "Members are not added yet",
+                                style: textTheme.titleMedium!.copyWith(
+                                    fontSize: 15.sp,
+                                    color: AppColors.kBlackColor),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 210.h,
+                              width: 1.sw,
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  String memberUid = snapshot.data!
+                                      .data()!['members_list'][index];
+                                  return FutureBuilder(
+                                    future: fireStore
+                                        .collection(
+                                            AppConstants.userDataCollectionName)
+                                        .doc(memberUid)
+                                        .get(),
+                                    builder: (context, userSnapshot) {
+                                      if (!userSnapshot.hasData) {
+                                        return const Center(
+                                          child: LoadingWidget(
+                                              color: AppColors.kSecondaryColor),
+                                        );
+                                      } else if (userSnapshot.hasError) {
+                                        return Text(
+                                            userSnapshot.error.toString());
+                                      } else {
+                                        var userData =
+                                            userSnapshot.data!.data();
+                                        print("Useer data $userData");
+                                        return userData!.length == 0
+                                            ? Center(
+                                                child: Text(
+                                                  "Members are not added yet",
+                                                  style: textTheme.titleMedium!
+                                                      .copyWith(
+                                                          fontSize: 15.sp,
+                                                          color: AppColors
+                                                              .kBlackColor),
+                                                ),
                                               )
-                                            : null,
-                                      ),
-                                      title: Text(
-                                        userData['Name'],
-                                        style: textTheme.titleMedium,
-                                      ),
-                                      subtitle: Text(
-                                        userData['PhoneNumber'],
-                                        style: textTheme.titleMedium,
-                                      ),
-                                      onTap: () {
-                                        Navigator.pushNamed(context,
-                                            RouteNames.adminMemberDetailsView);
-                                      },
-                                    ),
+                                            : Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: AppColors
+                                                          .kBlackColor
+                                                          .withOpacity(0.5),
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r)),
+                                                child: ListTile(
+                                                  leading: CircleAvatar(
+                                                    backgroundImage: userData[
+                                                                'ProfileImage'] ==
+                                                            ""
+                                                        ? null
+                                                        : NetworkImage(
+                                                            userData[
+                                                                'ProfileImage'],
+                                                          ),
+                                                    radius: 30.r,
+                                                    child: userData[
+                                                                'ProfileImage'] ==
+                                                            ""
+                                                        ? Text(
+                                                            "No image",
+                                                            style: textTheme
+                                                                .titleMedium!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        10.sp),
+                                                          )
+                                                        : null,
+                                                  ),
+                                                  title: Text(
+                                                    userData['Name'],
+                                                    style:
+                                                        textTheme.titleMedium,
+                                                  ),
+                                                  subtitle: Text(
+                                                    userData['PhoneNumber'],
+                                                    style:
+                                                        textTheme.titleMedium,
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        RouteNames
+                                                            .adminMemberDetailsView);
+                                                  },
+                                                ),
+                                              );
+                                      }
+                                    },
                                   );
-                                }
-                              },
-                            );
-                          },
-                          itemCount:
-                              snapshot.data!.data()!['members_list'].length,
-                        ),
-                      ),
+                                },
+                                itemCount: snapshot.data!
+                                    .data()!['members_list']
+                                    .length,
+                              ),
+                            ),
                       Text(
                         "Payment received by committee members",
                         style: textTheme.titleMedium,
                       ),
-                      SizedBox(
-                        height: 210.h,
-                        width: 1.sw,
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return Text(
-                                snapshot.data!.data()!['members_list'][index]);
-                          },
-                          itemCount:
-                              snapshot.data!.data()!['members_list'].length,
-                        ),
-                      ),
+                      snapshot.data!.data()!['members_list'].length == 0
+                          ? Center(
+                              child: Text(
+                                "Members are not added yet",
+                                style: textTheme.titleMedium!.copyWith(
+                                    fontSize: 15.sp,
+                                    color: AppColors.kBlackColor),
+                              ),
+                            )
+                          : snapshot.data!
+                                      .data()!['committee_paid_by_members']
+                                      .length ==
+                                  0
+                              ? Center(
+                                  child: Text(
+                                    "Committee is not given by members",
+                                    style: textTheme.titleMedium!.copyWith(
+                                        fontSize: 15.sp,
+                                        color: AppColors.kBlackColor),
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 210.h,
+                                  width: 1.sw,
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return Text(snapshot.data!
+                                          .data()!['members_list'][index]);
+                                    },
+                                    itemCount: snapshot.data!
+                                        .data()!['members_list']
+                                        .length,
+                                  ),
+                                ),
                     ],
                   ),
                 ),
