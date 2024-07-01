@@ -21,14 +21,13 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   List members = [];
-  bool isLoading = false, nameExists = false,amountCheck = false;
+  bool isLoading = false, nameExists = false, amountCheck = false;
   int amount = 0;
 
   void totalAmount() {
     var member = int.parse(committeeMemberController.text);
     var amountPerMonth = int.parse(committeeAmountPerMonthController.text);
     amount = member * amountPerMonth;
-    print(amount);
     notifyListeners();
   }
 
@@ -86,18 +85,20 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
   //   }
   // }
 
-  void checkAmountValue(value){
-    if(value){
-      amountCheck = false;
-      // notifyListeners();
-    }
-    else{
-      amountCheck = true;
-      // notifyListeners();
-    }
-    print(amountCheck);
-    notifyListeners();
-  }
+  // void checkAmountValue(value) {
+  //   if (value) {
+  //     print("vallue ius $value");
+  //     amountCheck = false;
+  //     amount = 0;
+  //     notifyListeners();
+  //   } else {
+  //     print("dsaasdasdasda");
+  //     amountCheck = true;
+  //     notifyListeners();
+  //   }
+  //   print(amountCheck);
+  //   notifyListeners();
+  // }
 
   Future<void> selectStartDate() async {
     final DateTime? picked = await showDatePicker(

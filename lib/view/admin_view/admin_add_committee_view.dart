@@ -96,9 +96,7 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     },
                     onTapFunction: () {},
                     onChanged: (val) {
-                      print(val);
                       model.totalAmount();
-                      model.checkAmountValue(val.isEmpty);
                     },
                   ),
                   SizedBox(
@@ -115,7 +113,7 @@ class _AdminAddCommitteeViewState extends State<AdminAddCommitteeView> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        model.amountCheck
+                        model.amount != 0
                             ? model.amount.toString()
                             : "Total Amount",
                         style: textTheme.titleSmall!
