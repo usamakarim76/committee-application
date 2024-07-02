@@ -9,6 +9,7 @@ import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
+import 'package:committee_app/view/admin_view/admin_member_details_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -150,10 +151,12 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                             userSnapshot.data!.data();
                                         return InkWell(
                                           onTap: () {
-                                            Navigator.pushNamed(
-                                                context,
-                                                RouteNames
-                                                    .adminMemberDetailsView);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminMemberDetailsView(userUid: memberUid)));
+                                            // Navigator.pushNamed(
+                                            //     context,
+                                            //     RouteNames
+                                            //         .adminMemberDetailsView,
+                                            //     arguments: memberUid);
                                           },
                                           child: Container(
                                             width: 0.3.sw,
@@ -272,10 +275,10 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                                 userSnapshot.data!.data();
                                             return InkWell(
                                               onTap: () {
-                                                Navigator.pushNamed(
-                                                    context,
-                                                    RouteNames
-                                                        .adminMemberDetailsView);
+                                                // Navigator.pushNamed(
+                                                //     context,
+                                                //     RouteNames
+                                                //         .adminMemberDetailsView);
                                               },
                                               child: Container(
                                                 width: 0.3.sw,

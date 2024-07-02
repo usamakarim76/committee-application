@@ -54,9 +54,6 @@ class Routes {
       case RouteNames.termsAndConditions:
         return MaterialPageRoute(
             builder: (BuildContext context) => const TermsAndConditionsView());
-      case RouteNames.adminMemberDetailsView:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const AdminMemberDetailsView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
