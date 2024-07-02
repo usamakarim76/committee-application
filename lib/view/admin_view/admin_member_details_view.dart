@@ -99,7 +99,7 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                         style: textTheme.titleMedium,
                       ),
                       SizedBox(
-                        height: 160.h,
+                        height: 150.h,
                       ),
                       LoginSignUpButton(
                         title: "Committee paid",
