@@ -249,8 +249,9 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                                 )
                               : SizedBox(
                                   height: 210.h,
-                                  width: 1.sw,
+                                  width: 400.w,
                                   child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
                                       String memberUid = snapshot.data!.data()![
                                           'committee_paid_by_members'][index];
