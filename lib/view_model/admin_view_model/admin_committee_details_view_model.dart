@@ -35,8 +35,9 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
 
   Future monthlyCommitteePaidByUser(userId, deviceToken, userName) async {
     if (deviceToken == " ") {
-
+      sendPayToNotification(userId, userName);
     } else {
+
       DateTime now = DateTime.now();
       String monthName = DateFormat('MMMM').format(now);
       try {
@@ -60,6 +61,7 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
         final response =
             await http.post(url, body: jsonEncode(body), headers: headers);
         if (response.statusCode == 200) {
+          sendPayToNotification(userId, userName);
         } else {}
       } catch (e) {
         if (kDebugMode) {
@@ -67,5 +69,15 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
         }
       }
     }
+  }
+
+  Future sendPayToNotification(userUid, userName) async {
+    DateTime now = DateTime.now();
+    String monthName = DateFormat('MMMM').format(now);
+    var ref = fireStore.collection(AppConstants.notification).doc(userUid);
+    ref.update({
+      'notification': FieldValue.arrayUnion(
+          ["$userName you pay Committee of the month $monthName"]),
+    });
   }
 }
