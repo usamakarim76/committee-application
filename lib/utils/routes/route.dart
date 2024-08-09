@@ -2,7 +2,6 @@ import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/view/admin_view/admin_account_update.dart';
 import 'package:committee_app/view/admin_view/admin_add_committee_view.dart';
 import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
-import 'package:committee_app/view/admin_view/admin_member_details_view.dart';
 import 'package:committee_app/view/admin_view/admin_signup_view.dart';
 import 'package:committee_app/view/admin_view/admin_bottom_navigation_bar.dart';
 import 'package:committee_app/view/forgot_password_view.dart';
