@@ -48,39 +48,89 @@ class _AdminAccountUpdateViewState extends State<AdminAccountUpdateView> {
                               SizedBox(
                                 height: 100.h,
                               ),
-                              Center(
-                                child: InkWell(
-                                  onTap: () {
-                                    model.settingModalBottomSheet(context, () {
-                                      model.pickImage(ImageSource.camera).then(
-                                          (value) => Navigator.pop(context));
-                                    }, () {
-                                      model.pickImage(ImageSource.gallery).then(
-                                          (value) => Navigator.pop(context));
-                                    });
-                                  },
-                                  overlayColor: const MaterialStatePropertyAll(
-                                      Colors.transparent),
-                                  child: Container(
-                                    height: 160.h,
-                                    width: 160.w,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColors.kBlackColor),
-                                        shape: BoxShape.circle),
-                                    child: CircleAvatar(
-                                      backgroundImage: model.adminImage == ''
-                                          ? null
-                                          : FileImage(
-                                              File(model.adminImage),
-                                            ),
-                                      backgroundColor: Colors.transparent,
-                                      child: model.adminImage == ''
-                                          ? Lottie.asset(
-                                              "assets/lottie/user_profile_image.json")
-                                          : null,
+                              model.isEditImage
+                                  ? Center(
+                                      child: InkWell(
+                                        onTap: () {
+                                          model.settingModalBottomSheet(context,
+                                              () {
+                                            model
+                                                .pickImage(ImageSource.camera)
+                                                .then((value) =>
+                                                    Navigator.pop(context));
+                                          }, () {
+                                            model
+                                                .pickImage(ImageSource.gallery)
+                                                .then((value) =>
+                                                    Navigator.pop(context));
+                                          });
+                                        },
+                                        overlayColor:
+                                            const MaterialStatePropertyAll(
+                                                Colors.transparent),
+                                        child: Container(
+                                          height: 160.h,
+                                          width: 160.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColors.kBlackColor),
+                                              shape: BoxShape.circle),
+                                          child: CircleAvatar(
+                                            backgroundImage:
+                                                model.adminImage == ''
+                                                    ? null
+                                                    : FileImage(
+                                                        File(model.adminImage),
+                                                      ),
+                                            backgroundColor: Colors.transparent,
+                                            child: model.adminImage == ''
+                                                ? Lottie.asset(
+                                                    "assets/lottie/user_profile_image.json")
+                                                : null,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Container(
+                                        height: 160.h,
+                                        width: 160.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColors.kBlackColor),
+                                            shape: BoxShape.circle),
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              model.userImage == null ||
+                                                      model.userImage == ""
+                                                  ? null
+                                                  : NetworkImage(
+                                                      model.userImage!,
+                                                    ),
+                                          backgroundColor: Colors.transparent,
+                                          child: model.userImage == '' ||
+                                                  model.userImage == null
+                                              ? const Icon(
+                                                  Icons.person,
+                                                  size: 80,
+                                                  color:
+                                                      AppColors.kSecondaryColor,
+                                                )
+                                              : null,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                              20.verticalSpace,
+                              Center(
+                                child: LoginSignUpButton(
+                                  title: model.isEditImage
+                                      ? "Cancel Edit"
+                                      : "Edit Image",
+                                  onPress: () {
+                                    model.editImage();
+                                  },
+                                  width: 200.w,
+                                  height: 50.h,
                                 ),
                               ),
                               SizedBox(

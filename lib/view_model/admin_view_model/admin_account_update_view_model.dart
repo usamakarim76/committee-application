@@ -30,8 +30,13 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   fs.FirebaseStorage storage = fs.FirebaseStorage.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String? imageURL, error;
-  bool isLoading = false, dataLoad = false;
+  String? imageURL, error,userImage;
+  bool isLoading = false, dataLoad = false,isEditImage = false;
+
+  void editImage(){
+    isEditImage = !isEditImage;
+    notifyListeners();
+  }
 
   Future getUserData() async {
     dataLoad = true;
@@ -42,9 +47,11 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
           .doc(auth.currentUser!.uid)
           .get();
       if (data.exists) {
+        print(data.data());
         adminNameController.text = data['Name'];
         adminPhoneNumberController.text = data['PhoneNumber'];
         adminAddressController.text = data['Address'];
+        userImage = data['ProfileImage'];
         dataLoad = false;
         notifyListeners();
       }
@@ -96,7 +103,7 @@ class AdminAccountUpdateViewModel extends ChangeNotifier {
     try {
       String imageName = DateTime.now().millisecondsSinceEpoch.toString();
       fs.Reference storageReference =
-          storage.ref().child('images/${adminNameController.text + imageName}');
+          storage.ref().child('images/${adminNameController.text}');
       fs.UploadTask uploadTask = storageReference.putFile(imageFile);
       fs.TaskSnapshot storageSnapshot =
           await uploadTask.whenComplete(() => null);

@@ -171,7 +171,7 @@ class AdminSignUpViewModel extends ChangeNotifier {
     try {
       String imageName = DateTime.now().millisecondsSinceEpoch.toString();
       fs.Reference storageReference =
-          storage.ref().child('images/${adminNameController.text + imageName}');
+          storage.ref().child('images/${adminNameController.text}');
       fs.UploadTask uploadTask = storageReference.putFile(imageFile);
       fs.TaskSnapshot storageSnapshot =
           await uploadTask.whenComplete(() => null);
