@@ -22,26 +22,13 @@ class AdminDashBoardView extends StatefulWidget {
 class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  List<String> committeeMemberNames = [];
-  List memberUid = [];
-// Function to get committee member names based on their UIDs
-  Future<void> getCommitteeMemberNames(List<dynamic> memberUids) async {
-    committeeMemberNames.clear(); // Clear the list before fetching
-
-    for (String uid in memberUids) {
-      // Assuming each member's data is stored in a "members" collection
-      DocumentSnapshot memberSnapshot = await fireStore
-          .collection(AppConstants.userDataCollectionName)
-          .doc(uid)
-          .get();
-
-      Map<String, dynamic>? data =
-          memberSnapshot.data() as Map<String, dynamic>?;
-      if (data != null) {
-        print(data["Name"]);
-        committeeMemberNames.add(data['Name']);
-        print(committeeMemberNames);
-      }
+  Future<void> checkAndClearPaidMembers() async {
+    DateTime now = DateTime.now();
+    if (now.day == 1) {
+      DocumentReference committeeDoc = fireStore
+          .collection(AppConstants.adminCommittee)
+          .doc(auth.currentUser!.uid);
+      await committeeDoc.update({'committee_paid_by_members': []});
     }
   }
 
@@ -49,9 +36,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      getCommitteeMemberNames(memberUid);
-    });
+    checkAndClearPaidMembers();
   }
 
   @override
@@ -91,9 +76,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             // Calculate the difference in months
             int differenceInMonths =
                 _calculateDifferenceInMonths(startDate, endDate);
-            print(snapshot.data!.data()!['members_list']);
-            memberUid = snapshot.data!.data()!['members_list'];
-            print("Members : $memberUid");
+            print(snapshot.data!.data()!['committee_members_name']);
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,

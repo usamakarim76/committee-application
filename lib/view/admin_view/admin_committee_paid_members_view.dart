@@ -76,7 +76,7 @@ class _AdminCommitteePaidMembersViewState
                               0
                           ? Center(
                               child: Text(
-                                "Committee is not given by members",
+                                "Committee is not given by any member",
                                 style: textTheme.titleMedium!.copyWith(
                                     fontSize: 15.sp,
                                     color: AppColors.kBlackColor),
