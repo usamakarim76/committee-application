@@ -1,31 +1,27 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/no_data_available_widget.dart';
-import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
-import 'package:committee_app/view/admin_view/admin_member_details_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
-class AdminDashBoardView extends StatefulWidget {
-  const AdminDashBoardView({super.key});
+import '../../resources/colors.dart';
+
+class AdminCommitteePaidMembersView extends StatefulWidget {
+  const AdminCommitteePaidMembersView({super.key});
 
   @override
-  State<AdminDashBoardView> createState() => _AdminDashBoardViewState();
+  State<AdminCommitteePaidMembersView> createState() =>
+      _AdminCommitteePaidMembersViewState();
 }
 
-class _AdminDashBoardViewState extends State<AdminDashBoardView> {
+class _AdminCommitteePaidMembersViewState
+    extends State<AdminCommitteePaidMembersView> {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -119,7 +115,8 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                           ),
                           IconButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, RouteNames.committeeMembersDetail);
+                                Navigator.pushNamed(
+                                    context, RouteNames.committeeMembersDetail);
                               },
                               icon: const Icon(
                                 Icons.arrow_forward,

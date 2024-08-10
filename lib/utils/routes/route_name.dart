@@ -12,4 +12,5 @@ class RouteNames {
   static const String adminAccountUpdateScreen = "update_account";
   static const String termsAndConditions = "terms_and_conditions";
   static const String committeeMembersDetail = "committee_member_details";
+  static const String committeePaidByMembers = "committee_paid_by_member_details";
 }

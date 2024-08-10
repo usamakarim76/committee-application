@@ -58,6 +58,7 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          20.verticalSpace,
                           Center(
                             child: CircleAvatar(
                               backgroundImage: userData!['ProfileImage'] == ""
@@ -79,28 +80,28 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                             height: 20.h,
                           ),
                           Text(
-                            userData['Name'],
+                            "Name : ${userData['Name']}",
                             style: textTheme.titleMedium,
                           ),
                           SizedBox(
                             height: 20.h,
                           ),
                           Text(
-                            userData['PhoneNumber'],
+                            "Phone Number : ${userData['PhoneNumber']}",
                             style: textTheme.titleMedium,
                           ),
                           SizedBox(
                             height: 20.h,
                           ),
                           Text(
-                            userData['Email'],
+                            "Email : ${userData['Email']}",
                             style: textTheme.titleMedium,
                           ),
                           SizedBox(
                             height: 20.h,
                           ),
                           Text(
-                            userData['Address'],
+                            "Address : ${userData['Address']}",
                             style: textTheme.titleMedium,
                           ),
                           SizedBox(
@@ -110,7 +111,9 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                             title: "Committee Pay",
                             onPress: () {
                               model.uploadDataToCommitteePaidByUser(
-                                  userData['UserUid'], userData['DeviceToken'],userData['Name']);
+                                  userData['UserUid'],
+                                  userData['DeviceToken'],
+                                  userData['Name']);
                             },
                             height: 60.h,
                             width: 1.sw,
