@@ -60,6 +60,7 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
           Utils.errorMessage(
               context, "Current user already joined the committee");
         } else {
+
           var data = await fireStore
               .collection(AppConstants.userDataCollectionName)
               .doc(adminUid)
@@ -104,6 +105,7 @@ class UserJoinCommitteeViewModel extends ChangeNotifier {
               }
             }
           }
+          Utils.successMessage(context, "Join request send");
         }
       }
     }
