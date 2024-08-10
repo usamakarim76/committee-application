@@ -95,8 +95,11 @@ class _AdminRequestViewState extends State<AdminRequestView> {
                                       LoginSignUpButton(
                                         title: "Accept",
                                         onPress: () {
+                                          print(
+                                              "asdsda${snapshot.data![index].name}");
                                           model.acceptRequest(
-                                              snapshot.data![index].userUid);
+                                              snapshot.data![index].userUid,
+                                              snapshot.data![index].name);
                                         },
                                         height: 45.h,
                                         width: 0.3.sw,

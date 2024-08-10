@@ -122,7 +122,7 @@ class AdminRequestViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future acceptRequest(userUid) async {
+  Future acceptRequest(userUid, userName) async {
     Utils.showLoading();
     print(userUid);
     try {
@@ -138,6 +138,8 @@ class AdminRequestViewModel extends ChangeNotifier {
           .update({
         'members_list': FieldValue.arrayUnion([userUid])
       });
+      addUserNameToCommittee(userName);
+
       Utils.removeLoading();
       notifyListeners();
     } catch (e) {
@@ -202,5 +204,14 @@ class AdminRequestViewModel extends ChangeNotifier {
         }
       }
     }
+  }
+
+  Future addUserNameToCommittee(String userName) async {
+    var ref = fireStore
+        .collection(AppConstants.adminCommittee)
+        .doc(auth.currentUser!.uid);
+    ref.update({
+      'committee_members_name': FieldValue.arrayUnion([userName]),
+    });
   }
 }
