@@ -39,7 +39,7 @@ class _UserNotificationViewState extends State<UserNotificationView> {
                 );
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
-              } else if (snapshot.data!.data()!['notification'].isEmpty) {
+              } else if (snapshot.data!.data()?['notification'].isEmpty) {
                 return const NoDataAvailableWidget();
               } else {
                 return Padding(

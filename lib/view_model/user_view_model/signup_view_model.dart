@@ -68,6 +68,7 @@ class SignUpViewModel extends ChangeNotifier {
             .onError((error, stackTrace) => {
                   Utils.errorMessage(context, error),
                 });
+        createNotificationListFireStore();
         isLoading = false;
         notifyListeners();
       });
@@ -102,44 +103,44 @@ class SignUpViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> googleSignIn() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    try {
-      googleSignIn.signOut();
-      isGoogleLoading = true;
-      notifyListeners();
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-        final AuthCredential authCredential = GoogleAuthProvider.credential(
-            idToken: googleSignInAuthentication.idToken,
-            accessToken: googleSignInAuthentication.accessToken);
-        UserCredential result = await auth.signInWithCredential(authCredential);
-        User? user = result.user;
-        dataToFireStore(user!.displayName, user.email, user.phoneNumber, "",
-                user.photoURL)
-            .then((value) => {
-                  Utils.successMessage(context, "Log in successfully"),
-                  isGoogleLoading = false,
-                  notifyListeners(),
-                  Navigator.pushNamedAndRemoveUntil(context,
-                      RouteNames.adminDashBoardScreen, (route) => false),
-                })
-            .onError((error, stackTrace) => {
-                  Utils.errorMessage(context, error),
-                });
-        isGoogleLoading = false;
-        notifyListeners();
-        createNotificationListFireStore();
-      }
-    } on FirebaseAuthException catch (e) {
-      isGoogleLoading = false;
-      notifyListeners();
-      Utils.errorMessage(context, e.message);
-    }
-  }
+  // Future<void> googleSignIn() async {
+  //   final GoogleSignIn googleSignIn = GoogleSignIn();
+  //   try {
+  //     googleSignIn.signOut();
+  //     isGoogleLoading = true;
+  //     notifyListeners();
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await googleSignIn.signIn();
+  //     if (googleSignInAccount != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleSignInAccount.authentication;
+  //       final AuthCredential authCredential = GoogleAuthProvider.credential(
+  //           idToken: googleSignInAuthentication.idToken,
+  //           accessToken: googleSignInAuthentication.accessToken);
+  //       UserCredential result = await auth.signInWithCredential(authCredential);
+  //       User? user = result.user;
+  //       dataToFireStore(user!.displayName, user.email, user.phoneNumber, "",
+  //               user.photoURL)
+  //           .then((value) => {
+  //                 Utils.successMessage(context, "Log in successfully"),
+  //                 isGoogleLoading = false,
+  //                 notifyListeners(),
+  //                 Navigator.pushNamedAndRemoveUntil(context,
+  //                     RouteNames.adminDashBoardScreen, (route) => false),
+  //               })
+  //           .onError((error, stackTrace) => {
+  //                 Utils.errorMessage(context, error),
+  //               });
+  //       isGoogleLoading = false;
+  //       notifyListeners();
+  //       createNotificationListFireStore();
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     isGoogleLoading = false;
+  //     notifyListeners();
+  //     Utils.errorMessage(context, e.message);
+  //   }
+  // }
 
   Future createNotificationListFireStore() async {
     print("in Notification");
