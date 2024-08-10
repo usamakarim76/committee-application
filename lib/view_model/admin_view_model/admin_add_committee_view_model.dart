@@ -40,7 +40,6 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
     int count = querySnapshot.docs.length;
     await fireStore
         .collection(AppConstants.adminCommittee)
-        // .doc(committeeNameController.text)
         .doc(auth.currentUser!.uid)
         .set({
           "id": count + 1,
@@ -54,7 +53,8 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
               "${endDate!.day}/${endDate!.month}/${endDate!.year}",
           "created_at": DateTime.now(),
           "members_list": members,
-          "committee_paid_by_members": members
+          "committee_paid_by_members": members,
+          "committee_members_name": members
         })
         .then((value) => {
               Utils.successMessage(context, "Committee created successfully"),

@@ -1,21 +1,15 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/no_data_available_widget.dart';
-import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
-import 'package:committee_app/view/admin_view/admin_member_details_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
 class AdminDashBoardView extends StatefulWidget {
@@ -28,13 +22,43 @@ class AdminDashBoardView extends StatefulWidget {
 class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  List<String> committeeMemberNames = [];
+  List memberUid = [];
+// Function to get committee member names based on their UIDs
+  Future<void> getCommitteeMemberNames(List<dynamic> memberUids) async {
+    committeeMemberNames.clear(); // Clear the list before fetching
+
+    for (String uid in memberUids) {
+      // Assuming each member's data is stored in a "members" collection
+      DocumentSnapshot memberSnapshot = await fireStore
+          .collection(AppConstants.userDataCollectionName)
+          .doc(uid)
+          .get();
+
+      Map<String, dynamic>? data =
+          memberSnapshot.data() as Map<String, dynamic>?;
+      if (data != null) {
+        print(data["Name"]);
+        committeeMemberNames.add(data['Name']);
+        print(committeeMemberNames);
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      getCommitteeMemberNames(memberUid);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(AppConstants.adminCommittee)
-            // .where('user_uid', isEqualTo: auth.currentUser!.uid)
             .doc(auth.currentUser!.uid)
             .snapshots(),
         builder: (context, snapshot) {
@@ -67,90 +91,115 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             // Calculate the difference in months
             int differenceInMonths =
                 _calculateDifferenceInMonths(startDate, endDate);
-            print(snapshot.data!.data()!['members_list'].length);
+            print(snapshot.data!.data()!['members_list']);
+            memberUid = snapshot.data!.data()!['members_list'];
+            print("Members : $memberUid");
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: Container(
-                  height: 1.sh,
-                  width: 1.sw,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.kWhiteColor,
-                    borderRadius: BorderRadius.circular(10.r),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 3,
-                        spreadRadius: 0,
-                        offset: const Offset(4, 1),
-                        color: AppColors.kBlackColor.withOpacity(0.3),
-                      )
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        snapshot.data!.data()!['committee_name'],
-                        style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
-                      ),
-                      Text(
-                        "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
-                        style: textTheme.titleMedium,
-                      ),
-                      Text(
-                        "Duration : $differenceInMonths months",
-                        style: textTheme.titleMedium,
-                      ),
-                      Text(
-                        "Total amount : ${snapshot.data!.data()!['total_amount']}",
-                        style: textTheme.titleMedium,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Committee Members",
-                            style: textTheme.titleMedium,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, RouteNames.committeeMembersDetail);
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward,
-                                color: AppColors.kSecondaryColor,
-                                size: 30,
-                              ))
+                child: Column(
+                  children: [
+                    Container(
+                      height: 0.35.sh,
+                      width: 1.sw,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 20.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.kWhiteColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 0,
+                            offset: const Offset(4, 1),
+                            color: AppColors.kBlackColor.withOpacity(0.3),
+                          )
                         ],
                       ),
-                      Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Paid members",
+                            snapshot.data!.data()!['committee_name'],
+                            style: textTheme.titleMedium!
+                                .copyWith(fontSize: 20.sp),
+                          ),
+                          Text(
+                            "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
                             style: textTheme.titleMedium,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, RouteNames.committeePaidByMembers);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_forward,
-                              color: AppColors.kSecondaryColor,
-                              size: 30,
-                            ),
+                          Text(
+                            "Duration : $differenceInMonths months",
+                            style: textTheme.titleMedium,
+                          ),
+                          Text(
+                            "Total amount : ${snapshot.data!.data()!['total_amount']}",
+                            style: textTheme.titleMedium,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Committee Members",
+                                style: textTheme.titleMedium,
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context,
+                                        RouteNames.committeeMembersDetail);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_forward,
+                                    color: AppColors.kSecondaryColor,
+                                    size: 30,
+                                  ))
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Paid members",
+                                style: textTheme.titleMedium,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context,
+                                      RouteNames.committeePaidByMembers);
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  color: AppColors.kSecondaryColor,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    20.verticalSpace,
+                    Container(
+                      width: 1.sw,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 20.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.kWhiteColor,
+                        borderRadius: BorderRadius.circular(10.r),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 0,
+                            offset: const Offset(4, 1),
+                            color: AppColors.kBlackColor.withOpacity(0.3),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             );
