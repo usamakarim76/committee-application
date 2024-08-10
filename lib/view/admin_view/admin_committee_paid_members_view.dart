@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
-import 'package:committee_app/resources/components/no_data_available_widget.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
-import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 import '../../resources/colors.dart';
 
@@ -42,30 +39,9 @@ class _AdminCommitteePaidMembersViewState
             );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
-          } else if (!snapshot.data!.exists) {
-            return Center(
-              child: NoDataAvailableWidget(
-                isButton: true,
-                onTap: () {
-                  Navigator.pushNamed(
-                      context, RouteNames.adminAddCommitteeScreen);
-                },
-                title: "Create Committee",
-                height: 50.h,
-                width: 200.w,
-              ),
-            );
           } else {
-            DateTime startDate = DateFormat('dd/MM/yyyy')
-                .parse(snapshot.data!.data()!['committee_start_date']);
-            DateTime endDate = DateFormat('dd/MM/yyyy')
-                .parse(snapshot.data!.data()!['committee_end_date']);
-            // Calculate the difference in months
-            int differenceInMonths =
-                _calculateDifferenceInMonths(startDate, endDate);
-            print(snapshot.data!.data()!['members_list'].length);
             return Scaffold(
-              appBar: const AppBarWidget(title: "My Committees"),
+              appBar: const AppBarWidget(title: "Committee paid Members"),
               backgroundColor: AppColors.kPrimaryColor,
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -86,262 +62,104 @@ class _AdminCommitteePaidMembersViewState
                       )
                     ],
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        snapshot.data!.data()!['committee_name'],
-                        style: textTheme.titleMedium!.copyWith(fontSize: 20.sp),
-                      ),
-                      Text(
-                        "Members : ${snapshot.data!.data()!['members_list'].length}/${snapshot.data!.data()!['number_of_members']}",
-                        style: textTheme.titleMedium,
-                      ),
-                      Text(
-                        "Duration : $differenceInMonths months",
-                        style: textTheme.titleMedium,
-                      ),
-                      Text(
-                        "Total amount : ${snapshot.data!.data()!['total_amount']}",
-                        style: textTheme.titleMedium,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Committee Members",
-                            style: textTheme.titleMedium,
+                  child: snapshot.data!.data()!['members_list'].length == 0
+                      ? Center(
+                          child: Text(
+                            "Members are not added yet",
+                            style: textTheme.titleMedium!.copyWith(
+                                fontSize: 15.sp, color: AppColors.kBlackColor),
                           ),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, RouteNames.committeeMembersDetail);
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward,
-                                color: AppColors.kSecondaryColor,
-                                size: 30,
-                              ))
-                        ],
-                      ),
-                      // snapshot.data!.data()!['members_list'].length == 0
-                      //     ? Center(
-                      //         child: Text(
-                      //           "Members are not added yet",
-                      //           style: textTheme.titleMedium!.copyWith(
-                      //               fontSize: 15.sp,
-                      //               color: AppColors.kBlackColor),
-                      //         ),
-                      //       )
-                      //     : SizedBox(
-                      //         height: 210.h,
-                      //         width: 400.w,
-                      //         child: ListView.builder(
-                      //           scrollDirection: Axis.horizontal,
-                      //           itemBuilder: (context, index) {
-                      //             String memberUid = snapshot.data!
-                      //                 .data()!['members_list'][index];
-                      //             return FutureBuilder(
-                      //               future: fireStore
-                      //                   .collection(
-                      //                       AppConstants.userDataCollectionName)
-                      //                   .doc(memberUid)
-                      //                   .get(),
-                      //               builder: (context, userSnapshot) {
-                      //                 if (!userSnapshot.hasData) {
-                      //                   return const Center(
-                      //                     child: LoadingWidget(
-                      //                         color: AppColors.kSecondaryColor),
-                      //                   );
-                      //                 } else if (userSnapshot.hasError) {
-                      //                   return Text(
-                      //                       userSnapshot.error.toString());
-                      //                 } else {
-                      //                   var userData =
-                      //                       userSnapshot.data!.data();
-                      //                   return InkWell(
-                      //                     onTap: () {
-                      //                       Navigator.push(
-                      //                           context,
-                      //                           MaterialPageRoute(
-                      //                               builder: (context) =>
-                      //                                   AdminMemberDetailsView(
-                      //                                       userUid:
-                      //                                           memberUid)));
-                      //                       // Navigator.pushNamed(
-                      //                       //     context,
-                      //                       //     RouteNames
-                      //                       //         .adminMemberDetailsView,
-                      //                       //     arguments: memberUid);
-                      //                     },
-                      //                     child: Container(
-                      //                       width: 0.3.sw,
-                      //                       height: 50.h,
-                      //                       decoration: BoxDecoration(
-                      //                         border: Border.all(
-                      //                           color: AppColors.kBlackColor
-                      //                               .withOpacity(0.5),
-                      //                         ),
-                      //                         borderRadius:
-                      //                             BorderRadius.circular(10.r),
-                      //                       ),
-                      //                       padding: EdgeInsets.symmetric(
-                      //                           horizontal: 10.w),
-                      //                       child: Column(
-                      //                         mainAxisAlignment:
-                      //                             MainAxisAlignment.spaceEvenly,
-                      //                         children: [
-                      //                           CircleAvatar(
-                      //                             backgroundImage: userData![
-                      //                                         'ProfileImage'] ==
-                      //                                     ""
-                      //                                 ? null
-                      //                                 : NetworkImage(
-                      //                                     userData[
-                      //                                         'ProfileImage'],
-                      //                                   ),
-                      //                             radius: 50.r,
-                      //                             child: userData[
-                      //                                         'ProfileImage'] ==
-                      //                                     ""
-                      //                                 ? Text(
-                      //                                     "No image",
-                      //                                     style: textTheme
-                      //                                         .titleMedium!
-                      //                                         .copyWith(
-                      //                                             fontSize:
-                      //                                                 10.sp),
-                      //                                   )
-                      //                                 : null,
-                      //                           ),
-                      //                           Text(
-                      //                             userData['Name'],
-                      //                             maxLines: 2,
-                      //                             overflow:
-                      //                                 TextOverflow.ellipsis,
-                      //                             style: textTheme.titleSmall,
-                      //                           ),
-                      //                           Text(
-                      //                             userData['PhoneNumber'],
-                      //                             style: textTheme.titleSmall,
-                      //                           ),
-                      //                         ],
-                      //                       ),
-                      //                     ),
-                      //                   );
-                      //                 }
-                      //               },
-                      //             );
-                      //           },
-                      //           itemCount: snapshot.data!
-                      //               .data()!['members_list']
-                      //               .length,
-                      //         ),
-                      //       ),
-                      Text(
-                        "Payment received by committee members",
-                        style: textTheme.titleMedium,
-                      ),
-                      snapshot.data!.data()!['members_list'].length == 0
+                        )
+                      : snapshot.data!
+                                  .data()!['committee_paid_by_members']
+                                  .length ==
+                              0
                           ? Center(
                               child: Text(
-                                "Members are not added yet",
+                                "Committee is not given by members",
                                 style: textTheme.titleMedium!.copyWith(
                                     fontSize: 15.sp,
                                     color: AppColors.kBlackColor),
                               ),
                             )
-                          : snapshot.data!
-                                      .data()!['committee_paid_by_members']
-                                      .length ==
-                                  0
-                              ? Center(
-                                  child: Text(
-                                    "Committee is not given by members",
-                                    style: textTheme.titleMedium!.copyWith(
-                                        fontSize: 15.sp,
-                                        color: AppColors.kBlackColor),
-                                  ),
-                                )
-                              : SizedBox(
-                                  height: 210.h,
-                                  width: 400.w,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      String memberUid = snapshot.data!.data()![
-                                          'committee_paid_by_members'][index];
-                                      return FutureBuilder(
-                                        future: fireStore
-                                            .collection(AppConstants
-                                                .userDataCollectionName)
-                                            .doc(memberUid)
-                                            .get(),
-                                        builder: (context, userSnapshot) {
-                                          if (!userSnapshot.hasData) {
-                                            return const Center(
-                                              child: LoadingWidget(
-                                                  color: AppColors
-                                                      .kSecondaryColor),
-                                            );
-                                          } else if (userSnapshot.hasError) {
-                                            return Text(
-                                                userSnapshot.error.toString());
-                                          } else {
-                                            var userData =
-                                                userSnapshot.data!.data();
-                                            return InkWell(
-                                              onTap: () {
-                                                // Navigator.pushNamed(
-                                                //     context,
-                                                //     RouteNames
-                                                //         .adminMemberDetailsView);
-                                              },
-                                              child: Container(
-                                                width: 0.3.sw,
-                                                height: 50.h,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: AppColors.kBlackColor
-                                                        .withOpacity(0.5),
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
+                          : SizedBox(
+                              height: 210.h,
+                              width: 400.w,
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  String memberUid = snapshot.data!
+                                          .data()!['committee_paid_by_members']
+                                      [index];
+                                  return FutureBuilder(
+                                    future: fireStore
+                                        .collection(
+                                            AppConstants.userDataCollectionName)
+                                        .doc(memberUid)
+                                        .get(),
+                                    builder: (context, userSnapshot) {
+                                      if (!userSnapshot.hasData) {
+                                        return const Center(
+                                          child: LoadingWidget(
+                                              color: AppColors.kSecondaryColor),
+                                        );
+                                      } else if (userSnapshot.hasError) {
+                                        return Text(
+                                            userSnapshot.error.toString());
+                                      } else {
+                                        var userData =
+                                            userSnapshot.data!.data();
+                                        return InkWell(
+                                          onTap: () {
+                                            // Navigator.pushNamed(
+                                            //     context,
+                                            //     RouteNames
+                                            //         .adminMemberDetailsView);
+                                          },
+                                          child: Container(
+                                            width: 1.sw,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: AppColors.kBlackColor
+                                                    .withOpacity(0.5),
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w,
+                                                vertical: 10.h),
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: userData![
+                                                              'ProfileImage'] ==
+                                                          ""
+                                                      ? null
+                                                      : NetworkImage(
+                                                          userData[
+                                                              'ProfileImage'],
+                                                        ),
+                                                  radius: 45.r,
+                                                  child: userData[
+                                                              'ProfileImage'] ==
+                                                          ""
+                                                      ? Text(
+                                                          "No image",
+                                                          style: textTheme
+                                                              .titleMedium!
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      10.sp),
+                                                        )
+                                                      : null,
                                                 ),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.w),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                20.horizontalSpace,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    CircleAvatar(
-                                                      backgroundImage: userData![
-                                                                  'ProfileImage'] ==
-                                                              ""
-                                                          ? null
-                                                          : NetworkImage(
-                                                              userData[
-                                                                  'ProfileImage'],
-                                                            ),
-                                                      radius: 50.r,
-                                                      child: userData[
-                                                                  'ProfileImage'] ==
-                                                              ""
-                                                          ? Text(
-                                                              "No image",
-                                                              style: textTheme
-                                                                  .titleMedium!
-                                                                  .copyWith(
-                                                                      fontSize:
-                                                                          10.sp),
-                                                            )
-                                                          : null,
-                                                    ),
                                                     Text(
-                                                      userData['Name'],
+                                                      "Name : ${userData['Name']}",
                                                       maxLines: 2,
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -349,41 +167,29 @@ class _AdminCommitteePaidMembersViewState
                                                           textTheme.titleSmall,
                                                     ),
                                                     Text(
-                                                      userData['PhoneNumber'],
+                                                      "Ph.no : ${userData['PhoneNumber']}",
                                                       style:
                                                           textTheme.titleSmall,
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      );
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
-                                    itemCount: snapshot.data!
-                                        .data()!['committee_paid_by_members']
-                                        .length,
-                                  ),
-                                ),
-                    ],
-                  ),
+                                  );
+                                },
+                                itemCount: snapshot.data!
+                                    .data()!['committee_paid_by_members']
+                                    .length,
+                              ),
+                            ),
                 ),
               ),
             );
           }
         });
-  }
-
-  int _calculateDifferenceInMonths(DateTime startDate, DateTime endDate) {
-    int years = endDate.year - startDate.year;
-    int months = endDate.month - startDate.month;
-    int days = endDate.day - startDate.day;
-
-    int totalMonths = years * 12 + months;
-    if (days < 0) {
-      totalMonths--;
-    }
-    return totalMonths;
   }
 }

@@ -2,6 +2,7 @@ import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:committee_app/view/admin_view/admin_account_update.dart';
 import 'package:committee_app/view/admin_view/admin_add_committee_view.dart';
 import 'package:committee_app/view/admin_view/admin_committee_member_details.dart';
+import 'package:committee_app/view/admin_view/admin_committee_paid_members_view.dart';
 import 'package:committee_app/view/admin_view/admin_dashboard_view.dart';
 import 'package:committee_app/view/admin_view/admin_signup_view.dart';
 import 'package:committee_app/view/admin_view/admin_bottom_navigation_bar.dart';
@@ -61,7 +62,7 @@ class Routes {
       case RouteNames.committeePaidByMembers:
         return MaterialPageRoute(
             builder: (BuildContext context) =>
-                const AdminCommitteeMemberDetailsView());
+                const AdminCommitteePaidMembersView());
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
