@@ -41,7 +41,10 @@ class _AdminCommitteePaidMembersViewState
             return Text(snapshot.error.toString());
           } else {
             return Scaffold(
-              appBar: const AppBarWidget(title: "Committee paid Members"),
+              appBar: const AppBarWidget(
+                title: "Committee paid Members",
+                check: true,
+              ),
               backgroundColor: AppColors.kPrimaryColor,
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),

@@ -99,7 +99,8 @@ class SignUpViewModel extends ChangeNotifier {
       'Role': 'User',
       'DeviceToken': "",
       'ProfileImage': image ?? "",
-      'CreatedAT': DateTime.now().toString()
+      'CreatedAT': DateTime.now().toString(),
+      'committee_joined_by_user': [],
     });
   }
 

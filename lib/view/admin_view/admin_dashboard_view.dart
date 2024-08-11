@@ -209,41 +209,51 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Committee members that are remaining",
-                            style: textTheme.titleMedium,
-                          ),
+                          usernames.isEmpty
+                              ? Text(
+                                  "Committee are not joined by any member yet.",
+                                  style: textTheme.titleMedium,
+                                )
+                              : Text(
+                                  "Committee members that are remaining",
+                                  style: textTheme.titleMedium,
+                                ),
                           20.verticalSpace,
-                          SizedBox(
-                            width: 1.sw,
-                            height: 40.h,
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: usernames.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: AppColors.kBlackColor,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.r),
+                          usernames.isEmpty
+                              ? const SizedBox()
+                              : SizedBox(
+                                  width: 1.sw,
+                                  height: 40.h,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: usernames.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: AppColors.kBlackColor,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w, vertical: 5.h),
+                                        child: Center(
+                                          child: Text(
+                                            usernames[index],
+                                            style: textTheme.titleMedium!
+                                                .copyWith(
+                                                    color: AppColors
+                                                        .kSecondaryColor),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            10.horizontalSpace,
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 5.h),
-                                  child: Center(
-                                    child: Text(
-                                      usernames[index],
-                                      style: textTheme.titleMedium!.copyWith(
-                                          color: AppColors.kSecondaryColor),
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      10.horizontalSpace,
-                            ),
-                          ),
+                                ),
                           20.verticalSpace,
                           Text(
                             snapshot.data!.data()![

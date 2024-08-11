@@ -139,6 +139,13 @@ class AdminRequestViewModel extends ChangeNotifier {
         'members_list': FieldValue.arrayUnion([userUid])
       });
       addUserNameToCommittee(userName);
+      var userRef = fireStore
+          .collection(AppConstants.userDataCollectionName)
+          .doc(userUid);
+      await userRef.update({
+        'committee_joined_by_user':
+        FieldValue.arrayUnion([auth.currentUser!.uid]),
+      });
 
       Utils.removeLoading();
       notifyListeners();
