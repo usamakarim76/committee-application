@@ -15,6 +15,8 @@ import 'package:committee_app/view/user_view/user_signup_view.dart';
 import 'package:committee_app/view/splash_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../view/user_view/user_joined_committe_view.dart';
+
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -43,6 +45,9 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) =>
                 const AdminBottomNavigationBar());
+      case RouteNames.userCommitteeView:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const UserJoinedCommitteeView());
       case RouteNames.userBottomNavBar:
         return MaterialPageRoute(
             builder: (BuildContext context) => const UserBottomNavigationBar());

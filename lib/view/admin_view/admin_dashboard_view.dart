@@ -103,7 +103,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             print(snapshot.data!.data()!['committee_members_name']);
             usernames = snapshot.data!.data()!['committee_members_name'];
             return Scaffold(
-              appBar: const AppBarWidget(title: "My Committees"),
+              appBar: const AppBarWidget(title: "My Committee"),
               backgroundColor: AppColors.kPrimaryColor,
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
