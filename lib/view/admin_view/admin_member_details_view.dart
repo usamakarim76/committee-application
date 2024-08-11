@@ -24,7 +24,8 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
   Widget build(BuildContext context) {
     print(widget.userUid);
     return ChangeNotifierProvider(
-      create: (BuildContext context) => AdminCommitteeDetailsViewModel(),
+      create: (BuildContext context) =>
+          AdminCommitteeDetailsViewModel(widget.userUid),
       child: Consumer<AdminCommitteeDetailsViewModel>(
         builder: (BuildContext context, model, Widget? child) => Scaffold(
           backgroundColor: AppColors.kPrimaryColor,
@@ -108,12 +109,15 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                             height: 150.h,
                           ),
                           LoginSignUpButton(
-                            title: "Committee Pay",
+                            title: model.isPaid ?"" :"Committee Pay",
                             onPress: () {
-                              model.uploadDataToCommitteePaidByUser(
-                                  userData['UserUid'],
-                                  userData['DeviceToken'],
-                                  userData['Name']);
+                              if (model.isPaid) {
+                              } else {
+                                model.uploadDataToCommitteePaidByUser(
+                                    userData['UserUid'],
+                                    userData['DeviceToken'],
+                                    userData['Name']);
+                              }
                             },
                             height: 60.h,
                             width: 1.sw,

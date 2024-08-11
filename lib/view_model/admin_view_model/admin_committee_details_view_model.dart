@@ -9,9 +9,13 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class AdminCommitteeDetailsViewModel extends ChangeNotifier {
+  AdminCommitteeDetailsViewModel(userUid) {
+    getUserPaymentConfirmation(userUid);
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  bool isLoading = false;
+  bool isLoading = false, isPaid = false;
 
   Future uploadDataToCommitteePaidByUser(userUid, deviceToken, userName) async {
     try {
@@ -37,7 +41,6 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
     if (deviceToken == " ") {
       sendPayToNotification(userId, userName);
     } else {
-
       DateTime now = DateTime.now();
       String monthName = DateFormat('MMMM').format(now);
       try {
@@ -79,5 +82,24 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
       'notification': FieldValue.arrayUnion(
           ["$userName you pay Committee of the month $monthName"]),
     });
+  }
+
+  Future getUserPaymentConfirmation(userUid) async {
+    print("asdasda");
+    var checkUser = await fireStore
+        .collection(AppConstants.adminCommittee)
+        .doc(auth.currentUser!.uid)
+        .get();
+    if (checkUser.exists) {
+      print("condition");
+      List<dynamic> requests = checkUser.data()!['committee_paid_by_members'];
+      if (requests.contains(auth.currentUser!.uid)) {
+        print("Contain");
+        isPaid = true;
+        notifyListeners();
+      } else {
+        print("Not contain");
+      }
+    }
   }
 }
