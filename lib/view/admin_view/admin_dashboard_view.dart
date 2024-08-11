@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
 import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/components/no_data_available_widget.dart';
+import 'package:committee_app/resources/components/round_button.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
 import 'package:committee_app/utils/routes/route_name.dart';
@@ -22,13 +24,35 @@ class AdminDashBoardView extends StatefulWidget {
 class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  String selectedUser = "";
+  List<dynamic> usernames = [];
   Future<void> checkAndClearPaidMembers() async {
     DateTime now = DateTime.now();
-    if (now.day == 1) {
+    if (now.day == 11) {
       DocumentReference committeeDoc = fireStore
           .collection(AppConstants.adminCommittee)
           .doc(auth.currentUser!.uid);
       await committeeDoc.update({'committee_paid_by_members': []});
+    }
+  }
+
+  void selectRandomUser() async {
+    if (usernames.isNotEmpty) {
+      final randomIndex = Random().nextInt(usernames.length);
+      final randomUser = usernames[randomIndex];
+
+      await fireStore
+          .collection(AppConstants.adminCommittee)
+          .doc(auth.currentUser!.uid)
+          .update({
+        'this_month_committee_member_selected': randomUser,
+      });
+      await fireStore
+          .collection(AppConstants.adminCommittee)
+          .doc(auth.currentUser!.uid)
+          .update({
+        'committee_members_name': FieldValue.arrayRemove([randomUser])
+      });
     }
   }
 
@@ -77,6 +101,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
             int differenceInMonths =
                 _calculateDifferenceInMonths(startDate, endDate);
             print(snapshot.data!.data()!['committee_members_name']);
+            usernames = snapshot.data!.data()!['committee_members_name'];
             return Scaffold(
               appBar: const AppBarWidget(title: "My Committees"),
               backgroundColor: AppColors.kPrimaryColor,
@@ -178,10 +203,74 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
                             spreadRadius: 0,
                             offset: const Offset(4, 1),
                             color: AppColors.kBlackColor.withOpacity(0.3),
-                          )
+                          ),
                         ],
                       ),
-                    )
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Committee members that are remaining",
+                            style: textTheme.titleMedium,
+                          ),
+                          20.verticalSpace,
+                          SizedBox(
+                            width: 1.sw,
+                            height: 40.h,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: usernames.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.kBlackColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 5.h),
+                                  child: Center(
+                                    child: Text(
+                                      usernames[index],
+                                      style: textTheme.titleMedium!.copyWith(
+                                          color: AppColors.kSecondaryColor),
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      10.horizontalSpace,
+                            ),
+                          ),
+                          20.verticalSpace,
+                          Text(
+                            snapshot.data!.data()![
+                                        'this_month_committee_member_selected'] ==
+                                    ""
+                                ? "No user selected yet for this month Committee."
+                                : "Selected user for this month's committee :",
+                            style: textTheme.titleMedium,
+                          ),
+                          10.verticalSpace,
+                          Center(
+                            child: Text(
+                              snapshot.data!.data()![
+                                  'this_month_committee_member_selected'],
+                              style: textTheme.titleLarge,
+                            ),
+                          ),
+                          30.verticalSpace,
+                          LoginSignUpButton(
+                            title: "Select Random Member",
+                            onPress: selectRandomUser,
+                            width: 1.sw,
+                            height: 50.h,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -106,22 +106,30 @@ class _AdminMemberDetailsViewState extends State<AdminMemberDetailsView> {
                             style: textTheme.titleMedium,
                           ),
                           SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            model.isPaid
+                                ? "Committee Pay Status : Paid"
+                                : "Committee Pay Status : Pending",
+                            style: textTheme.titleMedium,
+                          ),
+                          SizedBox(
                             height: 150.h,
                           ),
-                          LoginSignUpButton(
-                            title: model.isPaid ?"" :"Committee Pay",
-                            onPress: () {
-                              if (model.isPaid) {
-                              } else {
-                                model.uploadDataToCommitteePaidByUser(
-                                    userData['UserUid'],
-                                    userData['DeviceToken'],
-                                    userData['Name']);
-                              }
-                            },
-                            height: 60.h,
-                            width: 1.sw,
-                          ),
+                          model.isPaid
+                              ? const SizedBox()
+                              : LoginSignUpButton(
+                                  title: "Committee Pay",
+                                  onPress: () {
+                                    model.uploadDataToCommitteePaidByUser(
+                                        userData['UserUid'],
+                                        userData['DeviceToken'],
+                                        userData['Name']);
+                                  },
+                                  height: 60.h,
+                                  width: 1.sw,
+                                ),
                         ],
                       );
                     }

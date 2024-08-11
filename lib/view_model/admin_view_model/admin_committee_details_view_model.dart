@@ -93,7 +93,7 @@ class AdminCommitteeDetailsViewModel extends ChangeNotifier {
     if (checkUser.exists) {
       print("condition");
       List<dynamic> requests = checkUser.data()!['committee_paid_by_members'];
-      if (requests.contains(auth.currentUser!.uid)) {
+      if (requests.contains(userUid)) {
         print("Contain");
         isPaid = true;
         notifyListeners();

@@ -54,7 +54,8 @@ class AdminAddCommitteeViewModel extends ChangeNotifier {
           "created_at": DateTime.now(),
           "members_list": members,
           "committee_paid_by_members": members,
-          "committee_members_name": members
+          "committee_members_name": members,
+          "this_month_committee_member_selected": "",
         })
         .then((value) => {
               Utils.successMessage(context, "Committee created successfully"),
