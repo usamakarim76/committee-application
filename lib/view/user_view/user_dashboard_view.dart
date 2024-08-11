@@ -16,7 +16,7 @@ class UserDashBoardView extends StatefulWidget {
 }
 
 class _UserDashBoardViewState extends State<UserDashBoardView> {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _UserDashBoardViewState extends State<UserDashBoardView> {
       appBar: const AppBarWidget(title: "My Committees"),
       backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(
-          stream: firestore
+          stream: fireStore
               .collection(AppConstants.userDataCollectionName)
               .doc(auth.currentUser!.uid)
               .snapshots(),
