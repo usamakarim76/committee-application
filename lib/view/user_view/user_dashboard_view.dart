@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:committee_app/resources/colors.dart';
+import 'package:committee_app/resources/components/app_bar_widget.dart';
 import 'package:committee_app/resources/components/loading_widget.dart';
 import 'package:committee_app/resources/constants.dart';
 import 'package:committee_app/resources/text_constants.dart';
-import 'package:committee_app/utils/routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class UserDashBoardView extends StatefulWidget {
   const UserDashBoardView({super.key});
@@ -19,42 +18,10 @@ class UserDashBoardView extends StatefulWidget {
 class _UserDashBoardViewState extends State<UserDashBoardView> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  Future signOutUser() async {
-    try {
-      if (await googleSignIn.isSignedIn()) {
-        await googleSignIn.signOut();
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.loginScreen, (route) => false);
-      } else {
-        await auth.signOut();
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteNames.loginScreen, (route) => false);
-      }
-    } catch (e) {
-      print("Error signing out: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "User",
-          style: textTheme.titleMedium,
-        ),
-        centerTitle: true,
-        backgroundColor: AppColors.kPrimaryColor,
-        actions: [
-          IconButton(
-              onPressed: () {
-                signOutUser();
-              },
-              icon: const Icon(Icons.logout))
-        ],
-      ),
+      appBar: const AppBarWidget(title: "My Committees"),
       backgroundColor: AppColors.kPrimaryColor,
       body: StreamBuilder(
           stream: firestore
@@ -71,17 +38,16 @@ class _UserDashBoardViewState extends State<UserDashBoardView> {
               );
             } else if (!snapshot.hasData || !snapshot.data!.exists) {
               return const Center(
-                child: LoadingWidget(
-                  color: AppColors.kSecondaryColor,
-                )
-              );
+                  child: LoadingWidget(
+                color: AppColors.kSecondaryColor,
+              ));
             } else {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      snapshot.data!.get('Name'),
+                      snapshot.data!.get('committee_joined_by_user').first,
                       style: textTheme.titleMedium!.copyWith(
                         fontSize: 25.sp,
                       ),
